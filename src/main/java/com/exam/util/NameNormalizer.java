@@ -1,8 +1,5 @@
 package com.exam.util;
 
-/**
- * Created by Vasiliy Bobkov on 21.11.2016.
- */
 public abstract class NameNormalizer {
     public static String normalize(String name) {
         name = name.toLowerCase();

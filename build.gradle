@@ -1,4 +1,4 @@
-group 'com.socialnetwork'
+group 'com.exam'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
