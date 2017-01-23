@@ -16,7 +16,7 @@ public class UserDAOImpl implements UserDAO {
     private final ConnectionPool connectionPool;
     private final ResultSetProcessor<User> userBuilderFromRS = (rs) -> User.builder()
             .id(rs.getLong("id"))
-            .email(rs.getString("emai l"))
+            .email(rs.getString("email"))
             .password(rs.getString("password"))
             .firstName(rs.getString("first_name"))
             .lastName(rs.getString("last_name"))
