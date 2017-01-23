@@ -21,8 +21,8 @@ public class SecurityFilter extends HttpFilter {
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String path = Optional.ofNullable(request.getRequestURI()).orElse("");
-        System.out.println("Path: "+path);
-        if (!path.matches("^\\/static\\/.*")) {
+        System.out.println("Path: " + path);
+        if (!path.matches("^\\/static\\/.*") && !path.equals("/j_security_check")) {
             HttpSession session = request.getSession(true);
             if (session.getAttribute(CURRENT_USER) != null)
 
