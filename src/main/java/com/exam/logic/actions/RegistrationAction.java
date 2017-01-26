@@ -28,7 +28,7 @@ public class RegistrationAction implements Action {
 
         if (validCode != Validator.ValidCode.SUCCESS) {
             request.setAttribute(ERROR_MSG, validCode.getPropertyName());
-            return "/WEB-INF/jsp/registration.jsp";
+            return "/WEB-INF/jsp/not_auth/registration.jsp";
         } else {
             UserService userService = (UserService) request.getServletContext().getAttribute(USER_SERVICE);
             User user = User.builder()
@@ -42,7 +42,7 @@ public class RegistrationAction implements Action {
             ErrorHandler.ErrorCode errorCode = userService.register(user);
             if (errorCode != null) {
                 request.setAttribute(ERROR_MSG, errorCode.getPropertyName());
-                return "/WEB-INF/jsp/registration.jsp";
+                return "/WEB-INF/jsp/not_auth/registration.jsp";
             } else {
                 request.getSession().setAttribute(CURRENT_USER,userService.getSafeUser(user));
                 return "/index.jsp";

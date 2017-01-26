@@ -29,7 +29,7 @@ public class LoginAction implements Action {
             view = "/index.jsp";
         } else {
             request.setAttribute(ERROR_MSG, LOGIN_FAIL.getPropertyName());
-            view = "/WEB-INF/jsp/login.jsp";
+            view = "/WEB-INF/jsp/not_auth/login.jsp";
         }
         return view;
     }

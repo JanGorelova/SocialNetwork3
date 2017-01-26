@@ -3,8 +3,11 @@ package com.exam.listeners;
 
 import com.exam.connection_pool.ConnectionPool;
 import com.exam.connection_pool.ConnectionPoolException;
+import com.exam.dao.ProfileDAO;
+import com.exam.dao.h2.ProfileDAOImpl;
 import com.exam.dao.h2.UserDAOImpl;
 import com.exam.dao.UserDAO;
+import com.exam.logic.services.ProfileService;
 import com.exam.logic.services.UserService;
 import com.exam.util.DataScriptExecutor;
 import lombok.extern.log4j.Log4j;
@@ -23,6 +26,7 @@ public class Initializer implements ServletContextListener {
     public static final String MESSAGE_DAO = "messageDao";
     public static final String DIALOG_DAO = "dialogDao";
     public static final String USER_SERVICE = "userService";
+    public static final String PROFILE_SERVICE = "profileService";
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -44,5 +48,9 @@ public class Initializer implements ServletContextListener {
         UserDAO userDAO = new UserDAOImpl(connectionPool);
         context.setAttribute(USER_DAO, userDAO);
         context.setAttribute(USER_SERVICE, new UserService(userDAO));
+
+        ProfileDAO profileDAO = new ProfileDAOImpl(connectionPool);
+        context.setAttribute(PROFILE_DAO, profileDAO);
+        context.setAttribute(PROFILE_SERVICE, new ProfileService(profileDAO));
     }
 }

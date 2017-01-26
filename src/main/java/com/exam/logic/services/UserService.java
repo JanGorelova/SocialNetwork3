@@ -23,9 +23,8 @@ public class UserService {
 //        this.userDAO = (UserDAO) context.getAttribute(USER_DAO);
 //    }
 
-    public User getById(long id) {
-        return null;
-        // TODO: 21.01.2017 dopolit'
+    public Optional<User> getById(long id) {
+        return userDAO.read(id);
     }
 
     public Optional<User> authorize(String login, String password) {
@@ -41,7 +40,7 @@ public class UserService {
     public User getSafeUser(User user) {
         return new User(user.getId(),
                 user.getEmail(),
-                "skipped",
+                "",
                 user.getFirstName(),
                 user.getLastName(),
                 user.getGender(),

@@ -34,7 +34,7 @@ public class SecurityFilter extends HttpFilter {
             if (session.getAttribute(CURRENT_USER) != null)
                 chain.doFilter(request, response);
             else {
-                request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/jsp/not_auth/login.jsp").forward(request, response);
             }
         } else chain.doFilter(request, response);
     }
