@@ -2,20 +2,25 @@ package com.exam.dao.h2;
 
 import com.exam.connection_pool.ConnectionPool;
 import com.exam.connection_pool.ConnectionPoolException;
+import com.exam.dao.ProfileDAO;
+import com.exam.dao.TeamDAO;
 import com.exam.dao.UserDAO;
+import com.exam.models.Profile;
+import com.exam.models.Team;
 import com.exam.models.User;
 import com.exam.util.DataScriptExecutor;
-import lombok.SneakyThrows;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertFalse;
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class UserDAOImplTest {
     private static UserDAO userDao;
+    private static ProfileDAO profileDAO;
+    private static TeamDAO teamDAO;
 
     @BeforeClass
     public static void DBinit() throws ConnectionPoolException {
@@ -24,66 +29,77 @@ public class UserDAOImplTest {
         connectionPool.initPoolData();
         DataScriptExecutor.initSqlData("src/main/resources/H2Init.sql");
         userDao = new UserDAOImpl(connectionPool);
+        teamDAO = new TeamDAOImpl(connectionPool);
+        profileDAO = new ProfileDAOImpl(connectionPool);
+    }
+
+    private User generateUser(String email) {
+        return User.builder()
+                .email(email)
+                .password("123456")
+                .firstName("Иван")
+                .lastName("Иванов")
+                .gender(User.GENDER_MALE)
+                .role(User.ROLE_ADMIN)
+                .build();
     }
 
     @Test
-    @SneakyThrows
-    public void getById() throws Exception {
-        assertTrue(userDao.getByID(1L).isPresent());
+    public void read() throws Exception {
+        final String email = "read@ya.ru";
+        userDao.create(generateUser(email));
+        assertTrue(userDao.getByEmail(email)
+                .map(u -> userDao.read(u.getId()))
+                .isPresent());
     }
 
     @Test
-    @SneakyThrows
     public void getByEmail() throws Exception {
-        userDao.create(new User(0L, "test@junit.ru", "123456", "Иван", "Иванов", 1, User.Role.ADMIN.ordinal()));
-        assertTrue(userDao.getByEmail("test@junit.ru").isPresent());
+        final String email = "getByEmail@junit.org";
+        userDao.create(generateUser(email));
+        assertTrue(userDao.getByEmail(email).isPresent());
+    }
+
+    @Test
+    public void create() throws Exception {
+        final String email = "create@junit.org";
+        userDao.create(generateUser(email));
+        assertTrue(userDao.getByEmail(email).isPresent());
+    }
+
+    @Test
+    public void update() throws Exception {
+        final String oldMail = "oldmail@exam.com";
+        final String newMail = "newmail@exam.com";
+        userDao.create(generateUser(oldMail));
+        userDao.getByEmail(oldMail)
+                .map(user1 ->
+                        new User(
+                                user1.getId(),
+                                newMail,
+                                user1.getPassword(),
+                                user1.getFirstName(),
+                                user1.getLastName(),
+                                user1.getGender(),
+                                user1.getRole()
+                        )).ifPresent(user2 -> userDao.update(user2));
+        assertTrue(userDao.getByEmail(newMail).isPresent());
     }
 
 //    @Test
-//    @SneakyThrows
-//    public void getByNames() throws Exception {
+//    public void delete() throws Exception {
+//        final String email = "delete@UserDaoTest.org";
+//        final String team_name = "User delete test";
+//        userDao.create(generateUser(email));
+//        teamDAO.create(Team.builder().name(team_name).build());
+//        profileDAO.create(Profile.builder()
+//                .id(userDao.getByEmail(email).orElseThrow(RuntimeException::new).getId())
+//                .team(team_name)
+//                .build());
 //
-//        assertTrue(userDao.getByNames("Василий", "Бобков").size() > 0);
+//        Optional<User> userOptional = userDao.getByEmail(email);
+//        assertTrue(userOptional.isPresent());
+//        userOptional.ifPresent(u -> userDao.delete(u.getId()));
+//        assertFalse(userDao.getByEmail(email).isPresent());
 //    }
-
-    @Test
-    @SneakyThrows
-    public void create() throws Exception {
-
-        userDao.create(new User(0L, "vasya@ya.ru", "123456", "Иван", "Иванов", 1, User.Role.ADMIN.ordinal()));
-        assertTrue(userDao.getByEmail("vasya@ya.ru").isPresent());
-    }
-
-    @Test
-    @SneakyThrows
-    public void update() throws Exception {
-        userDao.create(new User(0L, "oldmail@exam.com", "123456", "Иван", "Иванов", 1, User.Role.ADMIN.ordinal()));
-        Optional<User> userOptional = userDao.getByEmail("oldmail@exam.com");
-        userOptional.map(user1 ->
-                new User(
-                        user1.getId(),
-                        "newmail@exam.com",
-                        user1.getPassword(),
-                        user1.getFirstName(),
-                        user1.getLastName(),
-                        user1.getGender(),
-                        user1.getRole()
-                )).ifPresent(user2 -> userDao.update(user2));
-        assertTrue(userDao.getByEmail("newmail@exam.com")
-                .orElseThrow(()->new RuntimeException("User 2 not found!"))
-                .getEmail()
-                .equals("newmail@exam.com"));
-    }
-
-    @Test
-    @SneakyThrows
-    public void delete() throws Exception {
-
-        userDao.create(new User(0L, "example3@ya.ru", "123456", "Иван", "Иванов", 1, User.Role.ADMIN.ordinal()));
-        Optional<User> userOptional = userDao.getByEmail("example3@ya.ru");
-        assertTrue(userOptional.isPresent());
-        long user_id = userOptional.get().getId();
-        userDao.delete(user_id);
-        assertFalse(userDao.getByEmail("example3@ya.ru").isPresent());
-    }
 }

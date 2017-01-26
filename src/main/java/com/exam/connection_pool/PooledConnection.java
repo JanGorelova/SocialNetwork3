@@ -25,6 +25,7 @@ public class PooledConnection implements Connection {
 
     @Override
     public void close() throws SQLException {
+        connection.setAutoCommit(true);
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         if (connection.isClosed()) {
             throw new SQLException("Attempting to close closed connection.");
@@ -32,7 +33,6 @@ public class PooledConnection implements Connection {
         if (connection.isReadOnly()) {
             connection.setReadOnly(false);
         }
-        connection.setAutoCommit(true);
         if (!connectionPool.getGivenAwayConQueue().remove(this)) {
             throw new SQLException("Error deleting connection from the given away connections pool.");
         }

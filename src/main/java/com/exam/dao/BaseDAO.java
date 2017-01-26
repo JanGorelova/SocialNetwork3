@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 public interface BaseDAO<E, K> {
     void create(E entity);
 
-    Optional<E> getByID(K id);
+    Optional<E> read(K key);
 
     void update(E entity);
 
@@ -38,7 +38,7 @@ public interface BaseDAO<E, K> {
 //        }
 //        return resultOptional;
 //    }
-    default Stream<E> executeQuery(Connection connection,
+    default List<E> executeQuery(Connection connection,
                                    String sql,
                                    ResultSetProcessor<E> processor,
                                    Object... params) {
@@ -56,7 +56,7 @@ public interface BaseDAO<E, K> {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-        return list.stream();
+        return list;
     }
     default void executeUpdate(Connection connection,
                                String sql,

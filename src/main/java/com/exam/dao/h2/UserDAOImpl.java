@@ -41,13 +41,14 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public Optional<User> getByID(Long id) {
+    public Optional<User> read(Long key) {
         Optional<User> userOptional;
         try (Connection connection = connectionPool.takeConnection()) {
             userOptional = executeQuery(connection,
                     "SELECT * FROM Users WHERE id=?",
                     userBuilderFromRS,
-                    id)
+                    key)
+                    .stream()
                     .findFirst();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -74,13 +75,15 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void delete(Long id) {
-        try (Connection connection = connectionPool.takeConnection()) {
-            executeUpdate(connection,
-                    "DELETE FROM Users WHERE id=?",
-                    id);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+//        try (Connection connection = connectionPool.takeConnection()) {
+//            executeUpdate(connection,
+//                    "DELETE Users , Profiles  FROM messages  INNER JOIN usersmessages  \n" +
+//                            "WHERE messages.messageid= usersmessages.messageid and messages.messageid = '1'"
+//                    "DELETE FROM Users WHERE id=?",
+//                    id);
+//        } catch (SQLException e) {
+//            throw new DaoException(e);
+//        }
     }
 
     @Override
@@ -91,6 +94,7 @@ public class UserDAOImpl implements UserDAO {
                     "SELECT * FROM Users WHERE email=?",
                     userBuilderFromRS,
                     email)
+                    .stream()
                     .findFirst();
         } catch (SQLException e) {
             throw new DaoException(e);
