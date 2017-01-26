@@ -5,7 +5,6 @@ import com.exam.logic.services.UserService;
 import com.exam.models.User;
 import com.exam.util.Security;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
@@ -19,7 +18,7 @@ public class LoginAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        UserService userService= (UserService) request.getServletContext().getAttribute(USER_SERVICE);
+        UserService userService = (UserService) request.getServletContext().getAttribute(USER_SERVICE);
         String view;
         String login = request.getParameter("j_username");
         String password = Security.md5Hex(request.getParameter("j_password"));

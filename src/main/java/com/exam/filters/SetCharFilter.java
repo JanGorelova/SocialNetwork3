@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter
+@WebFilter("/*")
 public class SetCharFilter extends HttpFilter {
 
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain next)

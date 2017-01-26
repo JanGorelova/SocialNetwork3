@@ -53,7 +53,7 @@
                         </form>
 
                     </div>
-                    <p class="text-center"><a href="${contextPath}/registration"
+                    <p class="text-center"><a href="${contextPath}/not_auth/registration"
                                               class="new-account btn btn-success btn-block">
                         <fmt:message key="login.create"/></a></p>
                 </div>

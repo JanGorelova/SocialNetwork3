@@ -2,7 +2,9 @@ package com.exam.logic;
 
 import com.exam.logic.actions.LocaleAction;
 import com.exam.logic.actions.LoginAction;
+import com.exam.logic.actions.RegistrationAction;
 
+import javax.servlet.Registration;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Optional;
@@ -16,8 +18,11 @@ public class ActionFactory {
             r.getSession().invalidate();
             return "/WEB-INF/jsp/login.jsp";
         });
-        actions.put("GET/static/locale", new LocaleAction());
+        actions.put("GET/not_auth/locale", new LocaleAction());
         actions.put("POST/j_security_check",new LoginAction());
+        actions.put("GET/not_auth/registration",(r,s)->"/WEB-INF/jsp/registration.jsp");
+        actions.put("POST/not_auth/registration", new RegistrationAction());
+        //actions.put("GET/profile", new ProfileAction());
 
     }
 

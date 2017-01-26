@@ -1,17 +1,24 @@
 package com.exam.connection_pool;
 
 
+import com.exam.util.ExceptionalConsumer;
 import lombok.Getter;
+import lombok.SneakyThrows;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.stream.Collectors;
 
 public class ConnectionPool {
     @Getter
@@ -89,6 +96,21 @@ public class ConnectionPool {
                     "Error connecting to the data source.", e);
         }
         return connection;
+    }
+
+    @SneakyThrows
+    public int[] executeScript(String pathToScript) {
+
+        try (Connection connection = takeConnection();
+             Statement statement = connection.createStatement()) {
+
+            Arrays.stream(
+                    Files.lines(Paths.get(pathToScript))
+                            .collect(Collectors.joining())
+                            .split(";"))
+                    .forEachOrdered(ExceptionalConsumer.toUncheckedConsumer(statement::addBatch));
+            return statement.executeBatch();
+        }
     }
 
     private void closeConnectionsQueue(BlockingQueue<Connection> queue)

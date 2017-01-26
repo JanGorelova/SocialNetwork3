@@ -15,7 +15,9 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {
         "/static/locale",
         "/logout",
-        "/j_security_check"})
+        "/j_security_check",
+        "/not_auth/*",
+        "/profile/*"})
 public class FrontController extends HttpServlet {
     private static final long serialVersionUID = 8950316306667086958L;
     private ActionFactory actionFactory;

@@ -14,14 +14,13 @@ import java.sql.Statement;
 @Log4j
 public abstract class DataScriptExecutor {
 
-    public static void initSqlData(String pathToInitSQL) {
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
+    public static void initSqlData(String pathToInitSQL, ConnectionPool connectionPool) {
         File file = new File(pathToInitSQL);
         String currentLine;
         StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while ((currentLine = reader.readLine()) != null) {
-               builder.append(currentLine);
+                builder.append(currentLine);
             }
         } catch (IOException e) {
             log.fatal("Reading sql script file error", e);
@@ -34,7 +33,7 @@ public abstract class DataScriptExecutor {
                 statement.executeUpdate(state);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.fatal("Init SQL script error", e);
         }
     }
 }

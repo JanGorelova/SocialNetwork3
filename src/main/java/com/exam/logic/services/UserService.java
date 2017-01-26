@@ -2,10 +2,16 @@ package com.exam.logic.services;
 
 import com.exam.dao.UserDAO;
 import com.exam.models.User;
+import com.exam.servlets.ErrorHandler;
+import com.exam.util.NameNormalizer;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Optional;
+
+import static com.exam.logic.Constants.ERROR_MSG;
+import static com.exam.servlets.ErrorHandler.ErrorCode.EMAIL_ALREADY_EXIST;
 
 @AllArgsConstructor
 @Log4j
@@ -32,7 +38,7 @@ public class UserService {
         else return Optional.empty();
     }
 
-    private User getSafeUser(User user) {
+    public User getSafeUser(User user) {
         return new User(user.getId(),
                 user.getEmail(),
                 "skipped",
@@ -40,5 +46,14 @@ public class UserService {
                 user.getLastName(),
                 user.getGender(),
                 user.getRole());
+    }
+
+    public ErrorHandler.ErrorCode register(User user) {
+        if (userDAO.getByEmail(user.getEmail()).isPresent()) {
+            return EMAIL_ALREADY_EXIST;
+        } else {
+                userDAO.create(user);
+                return null;
+        }
     }
 }

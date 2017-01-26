@@ -6,11 +6,13 @@ import com.exam.dao.ResultSetProcessor;
 import com.exam.dao.UserDAO;
 import com.exam.models.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
 
+@Log4j
 @RequiredArgsConstructor
 public class UserDAOImpl implements UserDAO {
     private final ConnectionPool connectionPool;
@@ -26,6 +28,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void create(User entity) {
+        log.debug(entity.getEmail() + " " + entity.getPassword());
         try (Connection connection = connectionPool.takeConnection()) {
             executeUpdate(connection,
                     "INSERT INTO Users (email, password, first_name, last_name, gender, role) VALUES (?, ?, ?, ?, ?, ?)",

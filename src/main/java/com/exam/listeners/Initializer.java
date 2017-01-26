@@ -37,8 +37,8 @@ public class Initializer implements ServletContextListener {
             log.error("Connection pool initialization error ", e);
         }
 
-        DataScriptExecutor.initSqlData(pathToDbConfig + "H2Init.sql");
-        DataScriptExecutor.initSqlData(pathToDbConfig + "usersH2Init.sql");
+        connectionPool.executeScript(pathToDbConfig + "H2Init.sql");
+        connectionPool.executeScript(pathToDbConfig + "usersH2Init.sql");
         log.info("SQL initialization has done successfully");
 
         UserDAO userDAO = new UserDAOImpl(connectionPool);
