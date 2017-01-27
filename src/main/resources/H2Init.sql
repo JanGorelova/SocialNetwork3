@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS Profiles(
   city       VARCHAR(25),
   university VARCHAR(50),
   team       INT REFERENCES Teams(id),
-  position   INT,
+  position   VARCHAR(25),
   about      VARCHAR(255),
   FOREIGN KEY (id) REFERENCES Users(id),
 );

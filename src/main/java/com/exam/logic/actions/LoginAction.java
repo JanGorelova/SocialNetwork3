@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-import static com.exam.listeners.Initializer.USER_SERVICE;
 import static com.exam.logic.Constants.CURRENT_USER;
 import static com.exam.logic.Constants.ERROR_MSG;
+import static com.exam.logic.Constants.USER_SERVICE;
 import static com.exam.servlets.ErrorHandler.ErrorCode.LOGIN_FAIL;
 
 public class LoginAction implements Action {

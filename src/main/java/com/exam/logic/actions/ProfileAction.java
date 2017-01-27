@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-import static com.exam.listeners.Initializer.PROFILE_SERVICE;
-import static com.exam.listeners.Initializer.USER_SERVICE;
 import static com.exam.logic.Constants.CURRENT_USER;
+import static com.exam.logic.Constants.PROFILE_SERVICE;
+import static com.exam.logic.Constants.USER_SERVICE;
 
 public class ProfileAction implements Action {
 

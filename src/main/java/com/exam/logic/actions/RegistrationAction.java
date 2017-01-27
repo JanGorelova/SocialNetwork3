@@ -10,9 +10,9 @@ import com.exam.util.Security;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.exam.listeners.Initializer.USER_SERVICE;
 import static com.exam.logic.Constants.CURRENT_USER;
 import static com.exam.logic.Constants.ERROR_MSG;
+import static com.exam.logic.Constants.USER_SERVICE;
 
 public class RegistrationAction implements Action {
     @Override

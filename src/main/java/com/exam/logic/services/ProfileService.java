@@ -12,4 +12,10 @@ public class ProfileService {
         return profileDAO.read(id)
                 .orElse(Profile.builder().id(id).build());
     }
+
+    public void update(Profile profile) {
+        if (profileDAO.read(profile.getId()).isPresent()) {
+            profileDAO.update(profile);
+        } else profileDAO.create(profile);
+    }
 }

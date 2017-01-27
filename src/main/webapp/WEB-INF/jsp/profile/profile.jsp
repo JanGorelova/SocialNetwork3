@@ -101,11 +101,11 @@
                                 </div>
                             </c:if>
 
-                            <c:if test="${profile.position!=0}">
+                            <c:if test="${not empty profile.position}">
                                 <div class="row">
                                     <div class="col-xs-6"><fmt:message key="profile.position"/>:</div>
                                     <div class="col-xs-6">
-                                        <fmt:message key="profile.position.${profile.position}"/>
+                                        ${profile.position}
                                     </div>
                                 </div>
                             </c:if>

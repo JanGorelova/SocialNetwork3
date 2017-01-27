@@ -1,20 +1,24 @@
 package com.exam.util;
 
+import lombok.extern.log4j.Log4j;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+@Log4j
 public abstract class NameNormalizer {
     public static String normalize(String name) {
-        name = name.toLowerCase();
-        String[] subNames = name.split("-");
-        name = Character.toString(subNames[0].charAt(0)).toUpperCase() + subNames[0].substring(1);
-        for (int i = 1; i < subNames.length; i++) {
-            name += "-" + Character.toString(subNames[i].charAt(0)).toUpperCase() + subNames[i].substring(1);
-        }
-        return name;
+
+        return Stream.of(name.split("-"))
+                .filter(s->s.length()>0)
+                .map(String::toLowerCase)
+                .map(StringBuilder::new)
+                .peek(sb -> sb.setCharAt(0, Character.toUpperCase(sb.charAt(0))))//Меняем регистр первого символа
+                .collect(Collectors.joining("-"));
     }
-    public static String multiNormalize(String name){
-        String out="";
-        for (String subName:name.split(" ")){
-            out+=normalize(subName)+" ";
-        }
-        return out.trim();
+
+    public static String multiNormalize(String name) {
+        return Stream.of(name.split(" "))
+                .map(NameNormalizer::normalize)
+                .collect(Collectors.joining(" "));
     }
 }

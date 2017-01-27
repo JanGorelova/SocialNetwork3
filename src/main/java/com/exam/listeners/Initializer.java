@@ -4,12 +4,11 @@ package com.exam.listeners;
 import com.exam.connection_pool.ConnectionPool;
 import com.exam.connection_pool.ConnectionPoolException;
 import com.exam.dao.ProfileDAO;
+import com.exam.dao.UserDAO;
 import com.exam.dao.h2.ProfileDAOImpl;
 import com.exam.dao.h2.UserDAOImpl;
-import com.exam.dao.UserDAO;
 import com.exam.logic.services.ProfileService;
 import com.exam.logic.services.UserService;
-import com.exam.util.DataScriptExecutor;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.ServletContext;
@@ -17,16 +16,12 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import static com.exam.logic.Constants.*;
+
 @Log4j
 @WebListener
 public class Initializer implements ServletContextListener {
-    public static final String USER_DAO = "userDao";
-    public static final String PROFILE_DAO = "profileDao";
-    public static final String RELATION_DAO = "relationDao";
-    public static final String MESSAGE_DAO = "messageDao";
-    public static final String DIALOG_DAO = "dialogDao";
-    public static final String USER_SERVICE = "userService";
-    public static final String PROFILE_SERVICE = "profileService";
+
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
