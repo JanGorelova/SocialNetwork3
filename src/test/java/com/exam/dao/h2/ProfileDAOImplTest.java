@@ -28,7 +28,7 @@ public class ProfileDAOImplTest {
         ConnectionPool.create("src/main/resources/db.properties");
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         connectionPool.initPoolData();
-        DataScriptExecutor.initSqlData("src/main/resources/H2Init.sql", connectionPool);
+        connectionPool.executeScript("src/main/resources/H2Init.sql");
 
         profileDAO = new ProfileDAOImpl(connectionPool);
         userDAO = new UserDAOImpl(connectionPool);

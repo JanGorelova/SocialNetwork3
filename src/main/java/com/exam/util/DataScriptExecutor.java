@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @Log4j
+@Deprecated
 public abstract class DataScriptExecutor {
 
     public static void initSqlData(String pathToInitSQL, ConnectionPool connectionPool) {

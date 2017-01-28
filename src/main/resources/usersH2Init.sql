@@ -41,7 +41,7 @@ INSERT INTO Profiles (id, telephone, birthday, country, city, university, team, 
 VALUES  (1, ' + 79315555555', '1993-12-01', 'Россия', 'Санкт - Петербург', 'Политех', 1, 1, 'Застенчивый');
 
 INSERT INTO Users (email, PASSWORD, first_name, last_name, gender, ROLE)
-VALUES ('oldmail@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Петя', 'Петров', 0, 0);
+VALUES ('user2@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Петя', 'Петров', 0, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
 VALUES ('user3@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Антон', 'Чехов', 0, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
@@ -69,21 +69,21 @@ VALUES ('user14@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Евгений',
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
 VALUES ('user15@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Леонид', 'Терлецкий', 0, 0);
 
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,2,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,6,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,7,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,8,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,9,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,10,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,11,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,12,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,13,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,14,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,15,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (1,4,1);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (5,1,1);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (3,1,3);
--- INSERT INTO Relations(sender_id, recipient_id, relation_type) VALUES (4,2,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,2,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,6,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,7,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,8,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,9,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,10,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,11,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,12,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,13,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,14,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,15,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (1,4,1);
+INSERT INTO Relations(sender, recipient, type) VALUES (5,1,1);
+INSERT INTO Relations(sender, recipient, type) VALUES (3,1,3);
+INSERT INTO Relations(sender, recipient, type) VALUES (4,2,3);
 --
 --
 -- INSERT INTO Dialogues (creator, description, last_update) VALUES (1, 'test dialog 1', '2016-11-15 10:28:42');

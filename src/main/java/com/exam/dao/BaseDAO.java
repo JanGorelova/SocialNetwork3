@@ -38,11 +38,11 @@ public interface BaseDAO<E, K> {
 //        }
 //        return resultOptional;
 //    }
-    default List<E> executeQuery(Connection connection,
+    default List executeQuery(Connection connection,
                                    String sql,
-                                   ResultSetProcessor<E> processor,
+                                   ResultSetProcessor processor,
                                    Object... params) {
-        List<E> list = new ArrayList<>();
+        List list = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             int cnt = 0;
             for (Object param : params) {

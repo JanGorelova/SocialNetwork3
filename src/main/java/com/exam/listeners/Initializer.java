@@ -4,8 +4,10 @@ package com.exam.listeners;
 import com.exam.connection_pool.ConnectionPool;
 import com.exam.connection_pool.ConnectionPoolException;
 import com.exam.dao.ProfileDAO;
+import com.exam.dao.RelationDAO;
 import com.exam.dao.UserDAO;
 import com.exam.dao.h2.ProfileDAOImpl;
+import com.exam.dao.h2.RelationDAOImpl;
 import com.exam.dao.h2.UserDAOImpl;
 import com.exam.logic.services.ProfileService;
 import com.exam.logic.services.UserService;
@@ -41,8 +43,10 @@ public class Initializer implements ServletContextListener {
         log.info("SQL initialization has done successfully");
 
         UserDAO userDAO = new UserDAOImpl(connectionPool);
+        RelationDAO relationDAO = new RelationDAOImpl(connectionPool);
         context.setAttribute(USER_DAO, userDAO);
-        context.setAttribute(USER_SERVICE, new UserService(userDAO));
+        context.setAttribute(RELATION_DAO, relationDAO);
+        context.setAttribute(USER_SERVICE, new UserService(userDAO, relationDAO));
 
         ProfileDAO profileDAO = new ProfileDAOImpl(connectionPool);
         context.setAttribute(PROFILE_DAO, profileDAO);

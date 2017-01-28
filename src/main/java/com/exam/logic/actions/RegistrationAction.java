@@ -10,9 +10,7 @@ import com.exam.util.Security;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.exam.logic.Constants.CURRENT_USER;
-import static com.exam.logic.Constants.ERROR_MSG;
-import static com.exam.logic.Constants.USER_SERVICE;
+import static com.exam.logic.Constants.*;
 
 public class RegistrationAction implements Action {
     @Override
@@ -44,7 +42,9 @@ public class RegistrationAction implements Action {
                 request.setAttribute(ERROR_MSG, errorCode.getPropertyName());
                 return "/WEB-INF/jsp/not_auth/registration.jsp";
             } else {
-                request.getSession().setAttribute(CURRENT_USER,userService.getSafeUser(user));
+                userService.authorize(email, Security.md5Hex(password))
+                        .ifPresent(u -> request.getSession()
+                                .setAttribute(CURRENT_USER, userService.getSafeUser(u)));
                 return "/index.jsp";
             }
         }

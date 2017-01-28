@@ -10,12 +10,14 @@ import lombok.extern.log4j.Log4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @Log4j
 @RequiredArgsConstructor
 public class UserDAOImpl implements UserDAO {
     private final ConnectionPool connectionPool;
+
     private final ResultSetProcessor<User> userBuilderFromRS = (rs) -> User.builder()
             .id(rs.getLong("id"))
             .email(rs.getString("email"))
@@ -28,7 +30,6 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void create(User entity) {
-        log.debug(entity.getEmail() + " " + entity.getPassword());
         try (Connection connection = connectionPool.takeConnection()) {
             executeUpdate(connection,
                     "INSERT INTO Users (email, password, first_name, last_name, gender, role) VALUES (?, ?, ?, ?, ?, ?)",
@@ -47,6 +48,7 @@ public class UserDAOImpl implements UserDAO {
     public Optional<User> read(Long key) {
         Optional<User> userOptional;
         try (Connection connection = connectionPool.takeConnection()) {
+            //noinspection unchecked
             userOptional = executeQuery(connection,
                     "SELECT * FROM Users WHERE id=?",
                     userBuilderFromRS,
@@ -93,6 +95,7 @@ public class UserDAOImpl implements UserDAO {
     public Optional<User> getByEmail(String email) {
         Optional<User> userOptional;
         try (Connection connection = connectionPool.takeConnection()) {
+            //noinspection unchecked
             userOptional = executeQuery(connection,
                     "SELECT * FROM Users WHERE email=?",
                     userBuilderFromRS,
@@ -103,5 +106,21 @@ public class UserDAOImpl implements UserDAO {
             throw new DaoException(e);
         }
         return userOptional;
+    }
+
+    @Override
+    public List<User> getFriends(Long id, Integer offset, Integer limit) {
+        List<User> list;
+        try (Connection connection = connectionPool.takeConnection()) {
+            //noinspection unchecked
+            list = executeQuery(connection,
+                    "SELECT * FROM Users WHERE id= (SELECT recipient r_id FROM Relations WHERE sender=? AND type=3 UNION " +
+                            "SELECT sender r_id FROM Relations WHERE recipient=? AND type=3) LIMIT ? OFFSET ?",
+                    userBuilderFromRS,
+                    id, id, limit, offset);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return list;
     }
 }

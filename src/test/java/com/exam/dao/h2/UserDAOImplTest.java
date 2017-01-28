@@ -5,16 +5,11 @@ import com.exam.connection_pool.ConnectionPoolException;
 import com.exam.dao.ProfileDAO;
 import com.exam.dao.TeamDAO;
 import com.exam.dao.UserDAO;
-import com.exam.models.Profile;
-import com.exam.models.Team;
 import com.exam.models.User;
 import com.exam.util.DataScriptExecutor;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Optional;
-
-import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class UserDAOImplTest {
@@ -27,7 +22,7 @@ public class UserDAOImplTest {
         ConnectionPool.create("src/main/resources/db.properties");
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         connectionPool.initPoolData();
-        DataScriptExecutor.initSqlData("src/main/resources/H2Init.sql",connectionPool);
+        connectionPool.executeScript("src/main/resources/H2Init.sql");
         userDao = new UserDAOImpl(connectionPool);
         teamDAO = new TeamDAOImpl(connectionPool);
         profileDAO = new ProfileDAOImpl(connectionPool);
@@ -86,6 +81,11 @@ public class UserDAOImplTest {
         assertTrue(userDao.getByEmail(newMail).isPresent());
     }
 
+    @Test
+    public void getFriends() throws Exception {
+        userDao.create(generateUser("getFriends@test.ru"));
+
+    }
 //    @Test
 //    public void delete() throws Exception {
 //        final String email = "delete@UserDaoTest.org";

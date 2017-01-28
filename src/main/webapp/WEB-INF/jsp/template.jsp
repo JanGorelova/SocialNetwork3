@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Solar BIM</title>
+    <title>Template</title>
 
     <jsp:include page="${contextPath}/WEB-INF/jsp/common/css.jsp"/>
 

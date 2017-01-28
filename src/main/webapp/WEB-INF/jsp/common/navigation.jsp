@@ -9,8 +9,8 @@
         <ul class="nav nav-list">
             <li class="nav-header">Навигация</li>
             <li><a href="${pageContext.request.contextPath}/profile">Моя страница</a></li>
-            <li><a href="/url">Сообщения</a></li>
-            <li><a href="/url">Друзья</a></li>
+            <li><a href="${pageContext.request.contextPath}/url">Сообщения</a></li>
+            <li><a href="${pageContext.request.contextPath}/friends">Друзья</a></li>
             <li><a href="/url">Отряды</a></li>
             <li><a href="/url">Мероприятия</a></li>
             <li><a href="/url">Фотографии</a></li>

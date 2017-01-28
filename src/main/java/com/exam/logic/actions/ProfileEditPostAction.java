@@ -27,15 +27,18 @@ public class ProfileEditPostAction implements Action {
         Validator.ValidCode validCode = Validator.validateProfile(telephone, birthday, country, city, university, about);
         if (validCode != Validator.ValidCode.SUCCESS) {
             request.setAttribute(ERROR_MSG, validCode.getPropertyName());
-            request.setAttribute(PROFILE, Profile.builder()
+            Profile.ProfileBuilder profileBuilder = Profile.builder()
                     .id(currentUser.getId())
-                    .birthday(LocalDate.parse(birthday))
                     .country(country)
                     .city(city)
                     .position(position)
                     .telephone(telephone)
-                    .about(about)
-                    .build());
+                    .about(about);
+            try {
+                profileBuilder.birthday(LocalDate.parse(birthday));
+            } catch (Exception ignored) {
+            }
+            request.setAttribute(PROFILE, profileBuilder.build());
         } else {
             LocalDate date;
             date = LocalDate.parse(birthday);

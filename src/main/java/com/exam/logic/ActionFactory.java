@@ -23,6 +23,7 @@ public class ActionFactory {
         actions.put("GET/profile", new ProfileAction());
         actions.put("GET/profile/edit", new ProfileEditGetAction());
         actions.put("POST/profile/edit", new ProfileEditPostAction());
+        actions.put("GET/friends", new FriendsListAction());
     }
 
     public Action getAction(HttpServletRequest request) {
