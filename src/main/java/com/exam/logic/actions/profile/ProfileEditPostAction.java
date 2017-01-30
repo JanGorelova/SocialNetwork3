@@ -1,4 +1,4 @@
-package com.exam.logic.actions;
+package com.exam.logic.actions.profile;
 
 import com.exam.logic.Action;
 import com.exam.logic.services.ProfileService;

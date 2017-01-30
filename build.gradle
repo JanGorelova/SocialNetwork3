@@ -23,6 +23,8 @@ dependencies {
     providedCompile 'org.apache.tomcat:tomcat-api:+'
     providedCompile 'org.apache.tomcat:tomcat-jsp-api:+'
     providedCompile 'org.apache.tomcat:tomcat-catalina:+'
+// https://mvnrepository.com/artifact/javax.el/javax.el-api
+    compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
 
     //Unit tests
     testCompile 'junit:junit:+'

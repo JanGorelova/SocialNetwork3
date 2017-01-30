@@ -8,6 +8,7 @@
 <jsp:useBean id="profile" type="com.exam.models.Profile" scope="request"/>
 <jsp:useBean id="currentUser" type="com.exam.models.User" scope="session"/>
 
+
 <!DOCTYPE html>
 <html lang="${sessionScope.language}">
 <head>
@@ -28,22 +29,75 @@
     <div class="row">
         <jsp:include page="${contextPath}/WEB-INF/jsp/common/navigation.jsp"/>
         <div class="col-xs-10 col-md-10 col-lg-10">
-
             <div class="row">
                 <div class="col-xs-3" id="avatar">
-                    <div class="row">
-                        Пикча будет здесь!
-                    </div>
+                    <div class="row">Пикча будет здесь!</div>
                     <c:if test="${user.id==currentUser.id}">
                         <div class="row">
-                            <a href="<c:url value="/profile/edit"/>">
+                            <a href="${contextPath}/profile/edit">
                                 <button class="btn btn-success btn-block"><fmt:message key="profile.edit"/></button>
                             </a>
                         </div>
                     </c:if>
                     <c:if test="${user.id!=currentUser.id}">
-                        <a href=/messages?recipient=${user.id}" class="btn btn-success btn-block">
-                            <fmt:message key="friends.writeMessage"/></a><br>
+                        <div class="row">
+                            <a href=${contextPath}/messages?recipient=${user.id}" class="btn btn-success btn-block">
+                                <fmt:message key="friends.writeMessage"/></a>
+                        </div>
+
+                        <div class="row">
+                            <c:set var="relationType" value="${requestScope.relationType}"/>
+                            <c:choose>
+                                <c:when test="${relationType==0}">
+                                    <form action="${contextPath}/friends/request/send" method="POST" role="form">
+                                        <div class="btn-group">
+                                            <input type="hidden" name="user_id" value="${user.id}">
+                                            <button type="submit" class="btn btn-default">
+                                                <fmt:message key="friends.add"/>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </c:when>
+                                <c:when test="${relationType==1}">
+                                    <form action="${contextPath}/friends/cancel" method="POST" role="form">
+                                        <div class="btn-group">
+                                                <input type="hidden" name="user_id" value="${user.id}">
+                                                <button type="submit" class="btn btn-default">
+                                                    <fmt:message key="friends.cancelRequest"/>
+                                                </button>
+                                        </div>
+                                    </form>
+                                </c:when>
+                                <c:when test="${relationType==2}">
+                                    <form action="${contextPath}/friends/incoming/accept" method="POST" role="form">
+                                        <div class="btn-group">
+                                                <input type="hidden" name="user_id" value="${user.id}">
+                                                <button type="submit" class="btn btn-default">
+                                                    <fmt:message key="friends.acceptIncoming"/>
+                                                </button>
+                                        </div>
+                                    </form>
+                                    <form action="${contextPath}/friends/cancel" method="POST" role="form">
+                                        <div class="btn-group">
+                                                <input type="hidden" name="user_id" value="${user.id}">
+                                                <button type="submit" class="btn btn-default">
+                                                    <fmt:message key="friends.cancelIncoming"/>
+                                                </button>
+                                        </div>
+                                    </form>
+                                </c:when>
+                                <c:when test="${relationType==3}">
+                                    <form action="${contextPath}/friends/cancel" method="POST" role="form">
+                                        <div class="btn-group">
+                                                <input type="hidden" name="user_id" value="${user.id}">
+                                                <button type="submit" class="btn btn-default">
+                                                    <fmt:message key="friends.delete"/>
+                                                </button>
+                                        </div>
+                                    </form>
+                                </c:when>
+                            </c:choose>
+                        </div>
                     </c:if>
                 </div>
                 <div class="col-xs-9">
@@ -105,7 +159,7 @@
                                 <div class="row">
                                     <div class="col-xs-6"><fmt:message key="profile.position"/>:</div>
                                     <div class="col-xs-6">
-                                        ${profile.position}
+                                            ${profile.position}
                                     </div>
                                 </div>
                             </c:if>

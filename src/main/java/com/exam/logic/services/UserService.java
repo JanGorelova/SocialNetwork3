@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.exam.logic.Constants.NEUTRAL;
+import static com.exam.logic.Constants.REQUEST;
 import static com.exam.servlets.ErrorHandler.ErrorCode.EMAIL_ALREADY_EXIST;
 
 @AllArgsConstructor
@@ -63,7 +64,7 @@ public class UserService {
     public List<User> getFriends(Long id, int offset, int limit) {
         List<User> list = new ArrayList<>();
         relationDAO
-                .getFriendsID(id,offset,limit)
+                .getFriendsID(id, offset, limit)
                 .stream()
                 .map(userDAO::read)
                 .forEach(user -> user.ifPresent(list::add));
@@ -71,10 +72,49 @@ public class UserService {
     }
 
     public void addFriend(Long sender, Long recipient) {
-        Relation relation = relationDAO.getBetween(sender, recipient);
-        switch (relation.getType()) {
-            case NEUTRAL:
+        relationDAO.addFriend(sender, recipient);
+    }
 
-        }
+    public List<User> getByName(String name, Integer offset, Integer limit) {
+        return userDAO.getByName(name, offset, limit);
+    }
+
+    public List<User> getByNames(String firstName, String lastName, Integer offset, Integer limit) {
+        return userDAO.getByNames(firstName, lastName, offset, limit);
+    }
+
+    public Relation getRelation(Long id_1, Long id_2) {
+        return relationDAO.getBetween(id_1, id_2);
+    }
+
+    public void deleteRelation(Long id, Long recipientID) {
+        Relation relation = relationDAO.getBetween(id, recipientID);
+        relationDAO.delete(relation.getId());
+    }
+
+    public void sendRequest(Long id, Long recipientID) {
+        Relation relation = relationDAO.getBetween(id, recipientID);
+        if (relation.getType() == NEUTRAL) {
+            relation = Relation.builder().sender(id).recipient(recipientID).type(REQUEST).build();
+            relationDAO.create(relation);
+        } else throw new RuntimeException("This Relarion exist (hack attack)");
+    }
+
+    public List<User> getIncomings(Long userID, int offset, int limit) {
+        return relationDAO
+                .getIncomingID(userID, offset, limit)
+                .stream()
+                .map(userDAO::read)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+    }
+
+    public List<User> getRequests(Long userID, int offset, int limit) {
+        return relationDAO
+                .getRequestID(userID, offset, limit)
+                .stream()
+                .map(userDAO::read)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
 }

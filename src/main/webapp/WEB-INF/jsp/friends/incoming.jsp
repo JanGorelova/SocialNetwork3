@@ -26,13 +26,11 @@
         <jsp:include page="${contextPath}/WEB-INF/jsp/common/navigation.jsp"/>
         <div class="col-xs-10 col-md-10 col-lg-10">
             <div class="row">
-                <h2><a href="${contextPath}/friends/search">Поиск людей</a></h2><br>
-                <h2><a href="${contextPath}/friends/incoming">Входящие заявки</a></h2><br>
-                <h2><a href="${contextPath}/friends/request">Исходящие заявки</a></h2><br>
+                <h2><a href="${contextPath}/friends/search">Поиск людей</a></h2>
             </div>
             <div class="row">
                 <div class="col-xs-12" id="friends">
-                    <c:forEach var="user" items="${requestScope.friendsList}">
+                    <c:forEach var="user" items="${requestScope.userList}">
                         <div class="row">
                             <div class="col-xs-3">
                                 <a href="${contextPath}/profile?id=${user.id}">Пикча</a>
@@ -47,14 +45,22 @@
                                    class="btn btn-success btn-block"><fmt:message key="friends.writeMessage"/></a><br>
                                 <a href="/id${user.id}" class="btn btn-info btn-block"><fmt:message
                                         key="friends.goToPage"/></a><br>
+                                <form action="${contextPath}/friends/incoming/accept" method="POST" role="form">
+                                    <div class="btn-group">
+                                        <input type="hidden" name="user_id" value="${user.id}">
+                                        <button type="submit" class="btn btn-default">
+                                            <fmt:message key="friends.acceptIncoming"/>
+                                        </button>
+                                    </div>
+                                </form>
                                 <form action="${contextPath}/friends/cancel" method="POST" role="form">
                                     <div class="btn-group">
                                         <input type="hidden" name="user_id" value="${user.id}">
-                                        <button type="submit" class="btn btn-danger btn-block">
-                                            <fmt:message key="friends.delete"/>
+                                        <button type="submit" class="btn btn-default">
+                                            <fmt:message key="friends.cancelIncoming"/>
                                         </button>
                                     </div>
-                                </form><br>
+                                </form>
                             </div>
                         </div>
                     </c:forEach>
@@ -64,6 +70,9 @@
                     <c:if test="${requestScope.hasNextPage}"><a
                             href="${contextPath}/friends?offset=${requestScope.offset+requestScope.limit}&limit=${requestScope.limit}">
                         <fmt:message key="nextPage"/></a> </c:if>
+                    <c:if test="${empty requestScope.userList}">
+                        Входящие заявки отсутствуют!
+                    </c:if>
                 </div>
             </div>
         </div>

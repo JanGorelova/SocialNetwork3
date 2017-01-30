@@ -4,6 +4,10 @@
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="text"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<fmt:message key="friends.search.hint" var="searchHint"/>
+<fmt:message key="friends.search.find" var="findButton"/>
+<c:set var="offset" value="requestScope.offset"/>
+<c:set var="limit" value="requestScope.limit"/>
 
 <!DOCTYPE html>
 <html lang="${sessionScope.language}">
@@ -14,7 +18,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Friends</title>
+    <title>Template</title>
 
     <jsp:include page="${contextPath}/WEB-INF/jsp/common/css.jsp"/>
 
@@ -26,13 +30,25 @@
         <jsp:include page="${contextPath}/WEB-INF/jsp/common/navigation.jsp"/>
         <div class="col-xs-10 col-md-10 col-lg-10">
             <div class="row">
-                <h2><a href="${contextPath}/friends/search">Поиск людей</a></h2><br>
-                <h2><a href="${contextPath}/friends/incoming">Входящие заявки</a></h2><br>
-                <h2><a href="${contextPath}/friends/request">Исходящие заявки</a></h2><br>
+                <div class="col-md-12">
+                    <p class="text-center" style="font-size: 2em"><fmt:message key="friends.search"/></p>
+                    <c:if test="${not empty requestScope.errorMsg}">
+                        <div class="alert alert-danger">
+                            <strong><fmt:message key="error.danger"/></strong> <fmt:message
+                                key="${requestScope.errorMsg}"/>
+                        </div>
+                    </c:if>
+                    <form class="form-search" action="${contextPath}/friends/search" method="get">
+                        <input type="text" class="input-lg search-query col-xs-10" name="names" value="${param.names}"
+                               placeholder="${searchHint}">
+                        <button type="submit" class="btn btn-primary col-xs-2">${findButton}</button>
+                    </form>
+                </div>
             </div>
+
             <div class="row">
                 <div class="col-xs-12" id="friends">
-                    <c:forEach var="user" items="${requestScope.friendsList}">
+                    <c:forEach var="user" items="${requestScope.userList}">
                         <div class="row">
                             <div class="col-xs-3">
                                 <a href="${contextPath}/profile?id=${user.id}">Пикча</a>
@@ -47,22 +63,15 @@
                                    class="btn btn-success btn-block"><fmt:message key="friends.writeMessage"/></a><br>
                                 <a href="/id${user.id}" class="btn btn-info btn-block"><fmt:message
                                         key="friends.goToPage"/></a><br>
-                                <form action="${contextPath}/friends/cancel" method="POST" role="form">
-                                    <div class="btn-group">
-                                        <input type="hidden" name="user_id" value="${user.id}">
-                                        <button type="submit" class="btn btn-danger btn-block">
-                                            <fmt:message key="friends.delete"/>
-                                        </button>
-                                    </div>
-                                </form><br>
                             </div>
                         </div>
                     </c:forEach>
+
                     <c:if test="${requestScope.offset>0}"><a
-                            href="${contextPath}/friends?offset=${requestScope.offset-requestScope.limit}&limit=${requestScope.limit}">
+                            href="${contextPath}/friends?offset=${offset-limit}&limit=${limit}">
                         <fmt:message key="previousPage"/></a> </c:if>
                     <c:if test="${requestScope.hasNextPage}"><a
-                            href="${contextPath}/friends?offset=${requestScope.offset+requestScope.limit}&limit=${requestScope.limit}">
+                            href="${contextPath}/friends?offset=${offset+limit}&limit=${limit}">
                         <fmt:message key="nextPage"/></a> </c:if>
                 </div>
             </div>

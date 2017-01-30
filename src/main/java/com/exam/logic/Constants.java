@@ -19,6 +19,9 @@ public final class Constants {
     public static final String OFFSET = "offset";
     public static final String LIMIT = "limit";
     public static final int DEFAULT_LIMIT = 10;
+    public static final String RELATION = "relation";
+    public static final String RELATION_TYPE = "relationType";
+    public static final String USER_LIST = "userList";
 
     private Constants() {
     }

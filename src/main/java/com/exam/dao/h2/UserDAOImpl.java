@@ -109,6 +109,37 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public List<User> getByName(String name, Integer offset, Integer limit) {
+        List<User> list;
+        try (Connection connection = connectionPool.takeConnection()) {
+            //noinspection unchecked
+            list = executeQuery(connection,
+                    "(SELECT * FROM Users WHERE first_name = ? UNION SELECT * FROM Users WHERE last_name = ?) LIMIT ? OFFSET ?",
+                    userBuilderFromRS,
+                    name, name, limit, offset);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<User> getByNames(String firstName, String lastName, Integer offset, Integer limit) {
+        List<User> list;
+        try (Connection connection = connectionPool.takeConnection()) {
+            //noinspection unchecked
+            list = executeQuery(connection,
+                    "(SELECT * FROM Users WHERE first_name = ? AND last_name=? " +
+                            "UNION SELECT * FROM Users WHERE first_name = ? AND last_name=?) LIMIT ? OFFSET ?",
+                    userBuilderFromRS,
+                    firstName, lastName, lastName, firstName, limit, offset);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return list;
+    }
+
+    @Override
     public List<User> getFriends(Long id, Integer offset, Integer limit) {
         List<User> list;
         try (Connection connection = connectionPool.takeConnection()) {

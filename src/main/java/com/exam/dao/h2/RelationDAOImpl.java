@@ -45,18 +45,19 @@ public class RelationDAOImpl implements RelationDAO {
                         Relation.RelationBuilder builder = Relation.builder()
                                 .id(rs.getLong("id"));
                         if (rs.getLong("sender") != sender) {
-                            builder.sender(rs.getLong("recipient"));
-                            builder.recipient(rs.getLong("sender"));
+                            builder.sender(recipient)
+                                    .recipient(sender);
                             if (rs.getInt("type") == REQUEST)
                                 builder.type(INCOMING);
+                            else builder.type(rs.getInt("type"));
                         } else {
-                            builder.sender(rs.getLong("sender"));
-                            builder.recipient(rs.getLong("recipient"));
-                            builder.type(rs.getInt("type"));
+                            builder.sender(sender)
+                                    .recipient(recipient)
+                                    .type(rs.getInt("type"));
                         }
                         return builder.build();
                     },
-                    sender, recipient);
+                    sender, recipient, sender, recipient);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -67,6 +68,55 @@ public class RelationDAOImpl implements RelationDAO {
                         .recipient(recipient)
                         .type(NEUTRAL)
                         .build());
+    }
+
+    @Override
+    public void addFriend(Long sender, Long recipient) {
+        int existType = getBetween(sender, recipient).getType();
+        if (existType != INCOMING) throw new DaoException("Invalid relation type");
+        try (Connection connection = connectionPool.takeConnection()) {
+            connection.setAutoCommit(false);
+            executeUpdate(connection,
+                    "DELETE FROM Relations WHERE id=(SELECT id FROM Relations WHERE sender=? AND recipient=? " +
+                            "UNION SELECT id FROM Relations WHERE recipient=? AND sender=?)",
+                    sender, recipient, sender, recipient);
+            executeUpdate(connection,
+                    "INSERT INTO Relations (sender, recipient, type) VALUES (?, ?, ?)",
+                    sender, recipient, FRIEND);
+            connection.commit();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Long> getIncomingID(Long userID, int offset, int limit) {
+        List<Long> list;
+        try (Connection connection = connectionPool.takeConnection()) {
+            //noinspection unchecked
+            list = executeQuery(connection,
+                    "SELECT sender FROM Relations WHERE recipient=? AND type=1 LIMIT ? OFFSET ?",
+                    rs -> rs.getLong("sender"),
+                    userID, limit, offset);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Long> getRequestID(Long userID, int offset, int limit) {
+        List<Long> list;
+        try (Connection connection = connectionPool.takeConnection()) {
+            //noinspection unchecked
+            list = executeQuery(connection,
+                    "SELECT recipient FROM Relations WHERE sender=? AND type=1 LIMIT ? OFFSET ?",
+                    rs -> rs.getLong("recipient"),
+                    userID, limit, offset);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return list;
     }
 
     @Override
@@ -111,6 +161,12 @@ public class RelationDAOImpl implements RelationDAO {
 
     @Override
     public void delete(Long id) {
-        // TODO: 27.01.2017  implementation
+        try (Connection connection = connectionPool.takeConnection()) {
+            executeUpdate(connection,
+                    "DELETE FROM  Relations WHERE id=?",
+                    id);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 }
