@@ -3,6 +3,7 @@ package com.exam.logic.actions.friends;
 import com.exam.logic.Action;
 import com.exam.logic.services.UserService;
 import com.exam.models.User;
+import lombok.extern.log4j.Log4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 import static com.exam.logic.Constants.*;
 
+@Log4j
 public class FriendsListAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -41,6 +43,7 @@ public class FriendsListAction implements Action {
         request.setAttribute(LIMIT, limit);
         request.setAttribute(FRIENDS_LIST, friendsList);
         request.setAttribute(HAS_NEXT_PAGE, hasNextPage);
+        log.debug("getting friends list");
         return "/WEB-INF/jsp/friends/list.jsp";
     }
 }

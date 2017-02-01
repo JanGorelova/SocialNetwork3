@@ -42,6 +42,7 @@ public class ProfileDAOImpl implements ProfileDAO {
         Optional<Profile> profileOptional;
         try (Connection connection = connectionPool.takeConnection()) {
             //SELECT i.id, i.model_id, g.name, g.caliber FROM Instance i, Gun g WHERE i.model_id = g.id
+            //noinspection unchecked
             profileOptional = executeQuery(connection,
                     "SELECT p.*, t.name team FROM (SELECT * FROM Profiles WHERE id=?) AS p " +
                             "JOIN Teams AS t ON t.id = p.id;",

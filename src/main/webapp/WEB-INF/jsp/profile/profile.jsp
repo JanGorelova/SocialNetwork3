@@ -41,7 +41,7 @@
                     </c:if>
                     <c:if test="${user.id!=currentUser.id}">
                         <div class="row">
-                            <a href=${contextPath}/messages?recipient=${user.id}" class="btn btn-success btn-block">
+                            <a href="${contextPath}/chat/private?recipient_id=${user.id}" class="btn btn-success btn-block">
                                 <fmt:message key="friends.writeMessage"/></a>
                         </div>
 

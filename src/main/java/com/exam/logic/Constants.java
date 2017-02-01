@@ -22,6 +22,12 @@ public final class Constants {
     public static final String RELATION = "relation";
     public static final String RELATION_TYPE = "relationType";
     public static final String USER_LIST = "userList";
+    public static final String CHAT_DAO = "chatDAO";
+    public static final String CHAT_SERVICE = "chatService";
+    public static final String CHATS_LIST = "chatsList";
+    public static final String MESSAGE_MAP = "messageMap";
+    public static final String USER_ZONE_ID = "userZoneID";
+    public static final String MESSAGE_LIST = "messageList";
 
     private Constants() {
     }

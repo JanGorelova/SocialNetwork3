@@ -3,6 +3,10 @@ package com.exam.logic;
 import com.exam.logic.actions.LocaleAction;
 import com.exam.logic.actions.LoginAction;
 import com.exam.logic.actions.RegistrationAction;
+import com.exam.logic.actions.chats.ChatListAction;
+import com.exam.logic.actions.chats.GetPrivateChatAction;
+import com.exam.logic.actions.chats.MessageListAction;
+import com.exam.logic.actions.chats.SendMessageAction;
 import com.exam.logic.actions.friends.*;
 import com.exam.logic.actions.profile.ProfileAction;
 import com.exam.logic.actions.profile.ProfileEditGetAction;
@@ -37,6 +41,10 @@ public class ActionFactory {
         actions.put("POST/friends/cancel", new CancelAction());
         actions.put("GET/friends/incoming", new GetIncomingAction());
         actions.put("GET/friends/request", new GetRequestAction());
+        actions.put("GET/chat", new ChatListAction());
+        actions.put("GET/chat/window", new MessageListAction());
+        actions.put("POST/chat/message/new", new SendMessageAction());
+        actions.put("GET/chat/private", new GetPrivateChatAction());
     }
 
     public Action getAction(HttpServletRequest request) {

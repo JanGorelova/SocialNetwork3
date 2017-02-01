@@ -1,36 +1,68 @@
--- CREATE TABLE IF NOT EXISTS Users (
---   id         BIGINT PRIMARY KEY AUTO_INCREMENT,
---   email      VARCHAR(255) NOT NULL UNIQUE,
---   password   VARCHAR(255) NOT NULL,
---   first_name VARCHAR(255) NOT NULL,
---   last_name  VARCHAR(255) NOT NULL,
---   gender     INT          NOT NULL,
---   role       INT          NOT NULL,
--- );
--- CREATE TABLE IF NOT EXISTS Teams (
---   id        BIGINT PRIMARY KEY,
---   name VARCHAR(30) UNIQUE,
--- );
--- CREATE TABLE IF NOT EXISTS Profiles (
---   id         BIGINT PRIMARY KEY,
---   telephone  VARCHAR(20),
---   birthday   DATE,
---   country    VARCHAR(25),
---   city       VARCHAR(25),
---   university VARCHAR(50),
---   team       INT REFERENCES Teams (id),
---   position   INT,
---   about      VARCHAR(255),
---   FOREIGN KEY (id) REFERENCES Users (id),
--- );
---
---
--- CREATE INDEX INDEX_EMAIL
---   ON Users (email);
--- CREATE INDEX INDEX_F_NAME
---   ON Users (first_name);
--- CREATE INDEX INDEX_L_NAME
---   ON Users (last_name);
+CREATE TABLE IF NOT EXISTS Users (
+  id         BIGINT PRIMARY KEY AUTO_INCREMENT,
+  email      VARCHAR(255) NOT NULL UNIQUE,
+  password   VARCHAR(255) NOT NULL,
+  first_name VARCHAR(255) NOT NULL,
+  last_name  VARCHAR(255) NOT NULL,
+  gender     INT          NOT NULL,
+  role       INT          NOT NULL,
+);
+
+CREATE TABLE IF NOT EXISTS Teams (
+  id   BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(30) UNIQUE,
+);
+
+CREATE TABLE IF NOT EXISTS Profiles (
+  id         BIGINT PRIMARY KEY,
+  telephone  VARCHAR(20),
+  birthday   DATE,
+  country    VARCHAR(25),
+  city       VARCHAR(25),
+  university VARCHAR(50),
+  team       INT REFERENCES Teams (id),
+  position   VARCHAR(25),
+  about      VARCHAR(255),
+  FOREIGN KEY (id) REFERENCES Users (id),
+);
+
+CREATE TABLE IF NOT EXISTS Relations (
+  id        BIGINT PRIMARY KEY AUTO_INCREMENT,
+  sender    BIGINT NOT NULL,
+  recipient BIGINT NOT NULL,
+  type      INT,
+  FOREIGN KEY (sender) REFERENCES Users (id),
+  FOREIGN KEY (recipient) REFERENCES Users (id)
+);
+
+CREATE TABLE IF NOT EXISTS Chats (
+  id          BIGINT PRIMARY KEY AUTO_INCREMENT,
+  creator_id  BIGINT    NOT NULL,
+  last_update TIMESTAMP NOT NULL,
+  start_time TIMESTAMP NOT NULL,
+  name        VARCHAR(20)        DEFAULT 'private',
+  description VARCHAR(30),
+  FOREIGN KEY (creator_id) REFERENCES Users (id)
+);
+
+CREATE TABLE IF NOT EXISTS Messages (
+  id           BIGINT PRIMARY KEY AUTO_INCREMENT,
+  sender_id    BIGINT    NOT NULL,
+  chat_id      BIGINT    NOT NULL,
+  text         VARCHAR(1000),
+  sending_time TIMESTAMP NOT NULL,
+  FOREIGN KEY (sender_id) REFERENCES Users (id),
+  FOREIGN KEY (chat_id) REFERENCES Chats (id)
+);
+
+CREATE TABLE IF NOT EXISTS Chat_Participants (
+  id             BIGINT PRIMARY KEY AUTO_INCREMENT,
+  participant_id BIGINT NOT NULL,
+  chat_id        BIGINT NOT NULL,
+  last_read      TIMESTAMP,
+  FOREIGN KEY (participant_id) REFERENCES Users (id),
+  FOREIGN KEY (chat_id) REFERENCES Chats (id)
+);
 
 -- Insert default values;
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
@@ -38,7 +70,7 @@ VALUES ('admin@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Василий', 
 
 INSERT INTO Teams (name) VALUES ('Вихрь');
 INSERT INTO Profiles (id, telephone, birthday, country, city, university, team, position, about)
-VALUES  (1, ' + 79315555555', '1993-12-01', 'Россия', 'Санкт - Петербург', 'Политех', 1, 1, 'Застенчивый');
+VALUES (1, ' + 79315555555', '1993-12-01', 'Россия', 'Санкт - Петербург', 'Политех', 1, 1, 'Застенчивый');
 
 INSERT INTO Users (email, PASSWORD, first_name, last_name, gender, ROLE)
 VALUES ('user2@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Петя', 'Петров', 0, 0);
@@ -69,23 +101,41 @@ VALUES ('user14@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Евгений',
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
 VALUES ('user15@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Леонид', 'Терлецкий', 0, 0);
 
-INSERT INTO Relations(sender, recipient, type) VALUES (1,2,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (1,6,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (1,7,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (1,8,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (1,9,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (1,10,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (1,11,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (1,12,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (1,13,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (1,14,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (1,15,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (1,4,1);
-INSERT INTO Relations(sender, recipient, type) VALUES (5,1,1);
-INSERT INTO Relations(sender, recipient, type) VALUES (3,1,3);
-INSERT INTO Relations(sender, recipient, type) VALUES (4,2,3);
---
---
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 2, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 6, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 7, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 8, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 9, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 10, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 11, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 12, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 13, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 14, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 15, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (1, 4, 1);
+INSERT INTO Relations (sender, recipient, type) VALUES (5, 1, 1);
+INSERT INTO Relations (sender, recipient, type) VALUES (3, 1, 3);
+INSERT INTO Relations (sender, recipient, type) VALUES (4, 2, 3);
+
+INSERT INTO Chats (name, creator_id, last_update, start_time) VALUES ('EPAM', 1, '2016-11-14 10:28:42','2016-10-14 10:28:42');
+INSERT INTO Chats (name, creator_id, last_update, start_time) VALUES ('private' , 1, '2016-11-14 10:28:42','2016-10-14 10:28:42');
+INSERT INTO Chats (name, creator_id, last_update, start_time) VALUES ('private', 2, '2016-11-14 10:28:42','2016-11-14 10:28:42');
+
+INSERT INTO Chat_Participants(participant_id, chat_id, last_read) VALUES (1,2,'2016-11-14 10:30:42');
+INSERT INTO Chat_Participants(participant_id, chat_id, last_read) VALUES (3,2,'2016-11-14 10:30:42');
+
+INSERT INTO Chat_Participants(participant_id, chat_id, last_read) VALUES (1,1,'2016-11-14 10:30:42');
+INSERT INTO Chat_Participants(participant_id, chat_id, last_read) VALUES (3,1,'2016-11-14 10:30:42');
+INSERT INTO Chat_Participants(participant_id, chat_id, last_read) VALUES (2,1,'2016-11-14 10:30:42');
+
+INSERT INTO Chat_Participants(participant_id, chat_id, last_read) VALUES (1,3,'2016-11-14 10:30:42');
+INSERT INTO Chat_Participants(participant_id, chat_id, last_read) VALUES (2,3,'2016-11-14 10:30:42');
+
+INSERT INTO Messages(sender_id, chat_id, text, sending_time) VALUES (1,1,'Хаюшки! Меня зовут Вася, яя тебе пишу новое сообщение!!!','2016-11-14 10:28:42');
+INSERT INTO Messages(sender_id, chat_id, text, sending_time) VALUES (2,2,'Хаюшки! Это приват','2016-11-14 10:28:42');
+INSERT INTO Messages(sender_id, chat_id, text, sending_time) VALUES (2,3,'Хаюшки! И это тоже приват','2016-11-14 10:28:42');
+
+
 -- INSERT INTO Dialogues (creator, description, last_update) VALUES (1, 'test dialog 1', '2016-11-15 10:28:42');
 -- INSERT INTO Dialogues (creator, description, last_update) VALUES (1, 'test dialog 2', '2016-11-13 10:28:42');
 -- INSERT INTO Dialogues (creator, description, last_update) VALUES (1, 'test dialog 3', '2016-11-10 10:28:42');

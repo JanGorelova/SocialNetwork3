@@ -3,12 +3,15 @@ package com.exam.listeners;
 
 import com.exam.connection_pool.ConnectionPool;
 import com.exam.connection_pool.ConnectionPoolException;
+import com.exam.dao.ChatDAO;
 import com.exam.dao.ProfileDAO;
 import com.exam.dao.RelationDAO;
 import com.exam.dao.UserDAO;
+import com.exam.dao.h2.ChatDAOImpl;
 import com.exam.dao.h2.ProfileDAOImpl;
 import com.exam.dao.h2.RelationDAOImpl;
 import com.exam.dao.h2.UserDAOImpl;
+import com.exam.logic.services.ChatService;
 import com.exam.logic.services.ProfileService;
 import com.exam.logic.services.UserService;
 import lombok.extern.log4j.Log4j;
@@ -51,5 +54,9 @@ public class Initializer implements ServletContextListener {
         ProfileDAO profileDAO = new ProfileDAOImpl(connectionPool);
         context.setAttribute(PROFILE_DAO, profileDAO);
         context.setAttribute(PROFILE_SERVICE, new ProfileService(profileDAO));
+
+        ChatDAO chatDAO = new ChatDAOImpl(connectionPool);
+        context.setAttribute(CHAT_DAO, profileDAO);
+        context.setAttribute(CHAT_SERVICE, new ChatService(chatDAO));
     }
 }
