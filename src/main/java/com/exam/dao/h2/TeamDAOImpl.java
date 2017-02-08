@@ -29,7 +29,6 @@ public class TeamDAOImpl implements TeamDAO {
     public Optional<Team> read(Long key) {
         Optional<Team> teamOptional;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
             teamOptional = executeQuery(connection,
                     "SELECT * FROM Teams WHERE id=?",
                     rs -> Team.builder()
@@ -76,7 +75,6 @@ public class TeamDAOImpl implements TeamDAO {
     public Optional<Team> getByName(String name) {
         Optional<Team> teamOptional;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
             teamOptional = executeQuery(connection,
                     "SELECT * FROM Teams WHERE name=?",
                     rs -> Team.builder()

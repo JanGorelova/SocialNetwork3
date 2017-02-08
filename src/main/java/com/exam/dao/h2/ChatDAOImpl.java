@@ -74,7 +74,6 @@ public class ChatDAOImpl implements ChatDAO {
             executeUpdate(connection,
                     "UPDATE Chat_Participants SET last_read=? WHERE chat_id=? AND participant_id=?",
                     Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDateTime()), chatID, userId);
-            //noinspection unchecked
             messageList = executeQuery(connection,
                     "SELECT m.id, m.text, m.sender_id, m.chat_id, m.sending_time, u.first_name FROM Messages AS m " +
                             "LEFT JOIN Users AS u WHERE m.chat_id = ? " +
@@ -100,7 +99,7 @@ public class ChatDAOImpl implements ChatDAO {
     public List<Chat> getChats(Long userID, int offset, int limit, ZoneId zoneId) {
         List<Chat> list;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
+
             list = executeQuery(connection,
                     "SELECT c.*, cp.last_read FROM Chats AS c LEFT JOIN Chat_Participants AS cp " +
                             "WHERE c.id = cp.chat_id AND cp.participant_id=? AND c.last_update>c.start_time " +

@@ -41,14 +41,9 @@ public class ProfileDAOImpl implements ProfileDAO {
     public Optional<Profile> read(Long key) {
         Optional<Profile> profileOptional;
         try (Connection connection = connectionPool.takeConnection()) {
-            //SELECT i.id, i.model_id, g.name, g.caliber FROM Instance i, Gun g WHERE i.model_id = g.id
-            //noinspection unchecked
             profileOptional = executeQuery(connection,
                     "SELECT p.*, t.name team FROM (SELECT * FROM Profiles WHERE id=?) AS p " +
                             "JOIN Teams AS t ON t.id = p.id;",
-//                    "SELECT * FROM (SELECT id, telephone, birthday, country, city, university, team," +
-//                            " position, about  FROM Profiles p WHERE u.id=? UNION SELECT t.team_name FROM Teams t" +
-//                            " WHERE t.id=p.team)",
                     (rs) -> Profile.builder()
                             .id(rs.getLong("id"))
                             .telephone(rs.getString("telephone"))

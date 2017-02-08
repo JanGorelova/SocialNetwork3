@@ -48,7 +48,6 @@ public class UserDAOImpl implements UserDAO {
     public Optional<User> read(Long key) {
         Optional<User> userOptional;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
             userOptional = executeQuery(connection,
                     "SELECT * FROM Users WHERE id=?",
                     userBuilderFromRS,
@@ -112,7 +111,6 @@ public class UserDAOImpl implements UserDAO {
     public List<User> getByName(String name, Integer offset, Integer limit) {
         List<User> list;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
             list = executeQuery(connection,
                     "(SELECT * FROM Users WHERE first_name = ? UNION SELECT * FROM Users WHERE last_name = ?) LIMIT ? OFFSET ?",
                     userBuilderFromRS,

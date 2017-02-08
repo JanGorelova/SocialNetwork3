@@ -21,7 +21,6 @@ public class RelationDAOImpl implements RelationDAO {
     public List<Long> getFriendsID(Long id, Integer offset, Integer limit) {
         List<Long> list;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
             list = executeQuery(connection,
                     "SELECT recipient r_id FROM Relations WHERE sender=? AND type=3 UNION " +
                             "SELECT sender r_id FROM Relations WHERE recipient=? AND type=3 LIMIT ? OFFSET ?",
@@ -37,7 +36,6 @@ public class RelationDAOImpl implements RelationDAO {
     public Relation getBetween(Long sender, Long recipient) {
         List<Relation> list;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
             list = executeQuery(connection,
                     "SELECT * FROM Relations WHERE sender=? AND recipient=? UNION " +
                             "SELECT * FROM Relations WHERE recipient=? AND sender=?",
@@ -93,7 +91,6 @@ public class RelationDAOImpl implements RelationDAO {
     public List<Long> getIncomingID(Long userID, int offset, int limit) {
         List<Long> list;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
             list = executeQuery(connection,
                     "SELECT sender FROM Relations WHERE recipient=? AND type=1 LIMIT ? OFFSET ?",
                     rs -> rs.getLong("sender"),
@@ -108,7 +105,6 @@ public class RelationDAOImpl implements RelationDAO {
     public List<Long> getRequestID(Long userID, int offset, int limit) {
         List<Long> list;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
             list = executeQuery(connection,
                     "SELECT recipient FROM Relations WHERE sender=? AND type=1 LIMIT ? OFFSET ?",
                     rs -> rs.getLong("recipient"),
@@ -136,7 +132,7 @@ public class RelationDAOImpl implements RelationDAO {
     public Optional<Relation> read(Long key) {
         Optional<Relation> relationOptional;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
+
             relationOptional = executeQuery(connection,
                     "SELECT * FROM Relations WHERE id=?",
                     rs -> Relation.builder()
