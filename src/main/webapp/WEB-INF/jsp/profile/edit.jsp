@@ -45,7 +45,8 @@
                                 <strong><fmt:message key="success"/></strong> <fmt:message key="success.changes"/>
                             </div>
                         </c:if>
-                        <form class="form-horizontal" action="${pageContext.request.contextPath}/profile/edit" method="POST">
+                        <form class="form-horizontal" action="${pageContext.request.contextPath}/profile/edit"
+                              method="POST">
                             <fieldset>
                                 <div class="row">
                                     <div class="control-group col-xs-12">
@@ -130,7 +131,7 @@
                         </form>
                         <h3><fmt:message key="profile.avaUpload"/></h3>
                         <fmt:message key="profile.selectPhoto"/>: <br/>
-                        <form action="${pageContext.request.contextPath}/upload_photo" method="post"
+                        <form action="${pageContext.request.contextPath}/upload/avatar" method="post"
                               enctype="multipart/form-data">
                             <input type="file" name="file" size="50" accept="image/jpeg"/>
                             <br/>

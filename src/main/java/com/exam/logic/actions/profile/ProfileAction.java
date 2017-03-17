@@ -1,8 +1,10 @@
 package com.exam.logic.actions.profile;
 
 import com.exam.logic.Action;
+import com.exam.logic.services.PhotoService;
 import com.exam.logic.services.ProfileService;
 import com.exam.logic.services.UserService;
+import com.exam.models.Photo;
 import com.exam.models.Profile;
 import com.exam.models.Relation;
 import com.exam.models.User;
@@ -35,6 +37,10 @@ public class ProfileAction implements Action {
         ProfileService profileService = (ProfileService) request.getServletContext().getAttribute(PROFILE_SERVICE);
         Profile profile = profileService.getById(user.getId());
         request.setAttribute("profile", profile);
+
+        PhotoService photoService = (PhotoService) request.getServletContext().getAttribute(PHOTO_SERVICE);
+        Optional<Photo> avaOptional = photoService.getUserAva(profile.getId());
+        avaOptional.ifPresent(ava->request.setAttribute("avatar", ava));
 
         return "/WEB-INF/jsp/profile/profile.jsp";
     }

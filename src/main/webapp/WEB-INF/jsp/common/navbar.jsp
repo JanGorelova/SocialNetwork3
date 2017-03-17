@@ -23,10 +23,10 @@
 
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="${pageContext.request.contextPath}/static/locale?language=ru_RU">Русский</a>
+                        <a href="${pageContext.request.contextPath}/not_auth/locale?language=ru_RU">Русский</a>
                     </li>
                     <li>
-                        <a href="${pageContext.request.contextPath}/static/locale?language=en_US">English</a>
+                        <a href="${pageContext.request.contextPath}/not_auth/locale?language=en_US">English</a>
                     </li>
                 </ul>
             </li>

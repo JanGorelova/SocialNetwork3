@@ -26,6 +26,15 @@ CREATE TABLE IF NOT EXISTS Profiles (
   FOREIGN KEY (id) REFERENCES Users (id),
 );
 
+CREATE TABLE IF NOT EXISTS Photos (
+  id      BIGINT PRIMARY KEY AUTO_INCREMENT,
+  sender  BIGINT,
+  time    DATETIME,
+  avatar  BOOLEAN DEFAULT FALSE,
+  link    VARCHAR(255) NOT NULL,
+  FOREIGN KEY (sender) REFERENCES Users (id),
+);
+
 CREATE TABLE IF NOT EXISTS Relations (
   id        BIGINT PRIMARY KEY AUTO_INCREMENT,
   sender    BIGINT NOT NULL,
@@ -39,7 +48,7 @@ CREATE TABLE IF NOT EXISTS Chats (
   id          BIGINT PRIMARY KEY AUTO_INCREMENT,
   creator_id  BIGINT    NOT NULL,
   last_update TIMESTAMP NOT NULL,
-  start_time TIMESTAMP NOT NULL,
+  start_time  TIMESTAMP NOT NULL,
   name        VARCHAR(20)        DEFAULT 'private',
   description VARCHAR(30),
   FOREIGN KEY (creator_id) REFERENCES Users (id)

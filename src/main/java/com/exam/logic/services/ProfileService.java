@@ -1,8 +1,11 @@
 package com.exam.logic.services;
 
 import com.exam.dao.ProfileDAO;
+import com.exam.models.Photo;
 import com.exam.models.Profile;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class ProfileService {

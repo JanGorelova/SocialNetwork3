@@ -23,7 +23,8 @@ import java.io.IOException;
         "/friends",
         "/friends/*",
         "/chat",
-        "/chat/*"})
+        "/chat/*",
+        "/upload/*"})
 @Log4j
 public class FrontController extends HttpServlet {
     private static final long serialVersionUID = 8950316306667086958L;

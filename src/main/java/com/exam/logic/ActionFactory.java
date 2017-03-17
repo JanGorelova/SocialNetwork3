@@ -11,6 +11,7 @@ import com.exam.logic.actions.friends.*;
 import com.exam.logic.actions.profile.ProfileAction;
 import com.exam.logic.actions.profile.ProfileEditGetAction;
 import com.exam.logic.actions.profile.ProfileEditPostAction;
+import com.exam.logic.actions.upload.Avatar;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +46,7 @@ public class ActionFactory {
         actions.put("GET/chat/window", new MessageListAction());
         actions.put("POST/chat/message/new", new SendMessageAction());
         actions.put("GET/chat/private", new GetPrivateChatAction());
+        actions.put("POST/upload/avatar", new Avatar());
     }
 
     public Action getAction(HttpServletRequest request) {

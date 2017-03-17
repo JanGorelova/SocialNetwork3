@@ -26,10 +26,9 @@
     <div class="row">
         <jsp:include page="${contextPath}/WEB-INF/jsp/common/navigation.jsp"/>
         <div class="col-xs-10 col-md-10 col-lg-10">
-
             <c:if test="${not empty successMsg}">
                 <div class="alert alert-success">
-                    <strong><fmt:message key="success"/></strong> <fmt:message key="success"/>
+                    <strong><fmt:message key="${successMsg}"/></strong> <fmt:message key="success"/>
                 </div>
             </c:if>
 

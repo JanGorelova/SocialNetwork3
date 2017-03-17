@@ -2,8 +2,10 @@ package com.exam.logic.actions.chats;
 
 import com.exam.logic.Action;
 import com.exam.logic.services.ChatService;
+import com.exam.logic.services.PhotoService;
 import com.exam.models.Chat;
 import com.exam.models.Message;
+import com.exam.models.Photo;
 import com.exam.models.User;
 import lombok.extern.log4j.Log4j;
 
@@ -29,7 +31,7 @@ public class ChatListAction implements Action {
                 .orElse(0);
 
         int limit = Optional.ofNullable(request.getParameter(LIMIT))
-                .filter(s -> s.length() > 0)
+                .filter(s -> !s.isEmpty())
                 .map(Integer::parseInt)
                 .orElse(DEFAULT_LIMIT);
 

@@ -31,7 +31,14 @@
         <div class="col-xs-10 col-md-10 col-lg-10">
             <div class="row">
                 <div class="col-xs-3" id="avatar">
-                    <div class="row">Пикча будет здесь!</div>
+                    <div class="row">
+                        <c:if test="${not empty requestScope.avatar}">
+                            <img width="200" src="/files/${requestScope.avatar.link}"/>
+                        </c:if>
+                        <c:if test="${empty requestScope.avatar}">
+                            <img src="${pageContext.request.contextPath}/static/img/default_ava.png">
+                        </c:if>
+                    </div>
                     <c:if test="${user.id==currentUser.id}">
                         <div class="row">
                             <a href="${contextPath}/profile/edit">
@@ -41,7 +48,8 @@
                     </c:if>
                     <c:if test="${user.id!=currentUser.id}">
                         <div class="row">
-                            <a href="${contextPath}/chat/private?recipient_id=${user.id}" class="btn btn-success btn-block">
+                            <a href="${contextPath}/chat/private?recipient_id=${user.id}"
+                               class="btn btn-success btn-block">
                                 <fmt:message key="friends.writeMessage"/></a>
                         </div>
 
@@ -61,38 +69,38 @@
                                 <c:when test="${relationType==1}">
                                     <form action="${contextPath}/friends/cancel" method="POST" role="form">
                                         <div class="btn-group">
-                                                <input type="hidden" name="user_id" value="${user.id}">
-                                                <button type="submit" class="btn btn-default">
-                                                    <fmt:message key="friends.cancelRequest"/>
-                                                </button>
+                                            <input type="hidden" name="user_id" value="${user.id}">
+                                            <button type="submit" class="btn btn-default">
+                                                <fmt:message key="friends.cancelRequest"/>
+                                            </button>
                                         </div>
                                     </form>
                                 </c:when>
                                 <c:when test="${relationType==2}">
                                     <form action="${contextPath}/friends/incoming/accept" method="POST" role="form">
                                         <div class="btn-group">
-                                                <input type="hidden" name="user_id" value="${user.id}">
-                                                <button type="submit" class="btn btn-default">
-                                                    <fmt:message key="friends.acceptIncoming"/>
-                                                </button>
+                                            <input type="hidden" name="user_id" value="${user.id}">
+                                            <button type="submit" class="btn btn-default">
+                                                <fmt:message key="friends.acceptIncoming"/>
+                                            </button>
                                         </div>
                                     </form>
                                     <form action="${contextPath}/friends/cancel" method="POST" role="form">
                                         <div class="btn-group">
-                                                <input type="hidden" name="user_id" value="${user.id}">
-                                                <button type="submit" class="btn btn-default">
-                                                    <fmt:message key="friends.cancelIncoming"/>
-                                                </button>
+                                            <input type="hidden" name="user_id" value="${user.id}">
+                                            <button type="submit" class="btn btn-default">
+                                                <fmt:message key="friends.cancelIncoming"/>
+                                            </button>
                                         </div>
                                     </form>
                                 </c:when>
                                 <c:when test="${relationType==3}">
                                     <form action="${contextPath}/friends/cancel" method="POST" role="form">
                                         <div class="btn-group">
-                                                <input type="hidden" name="user_id" value="${user.id}">
-                                                <button type="submit" class="btn btn-default">
-                                                    <fmt:message key="friends.delete"/>
-                                                </button>
+                                            <input type="hidden" name="user_id" value="${user.id}">
+                                            <button type="submit" class="btn btn-default">
+                                                <fmt:message key="friends.delete"/>
+                                            </button>
                                         </div>
                                     </form>
                                 </c:when>

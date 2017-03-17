@@ -70,7 +70,7 @@ VALUES ('admin@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Василий', 
 
 INSERT INTO Teams (name) VALUES ('Вихрь');
 INSERT INTO Profiles (id, telephone, birthday, country, city, university, team, position, about)
-VALUES (1, ' + 79315555555', '1993-12-01', 'Россия', 'Санкт - Петербург', 'Политех', 1, 1, 'Застенчивый');
+VALUES (1, '+79315555555', '1993-12-01', 'Россия', 'Санкт - Петербург', 'Политех', 1, 1, 'Застенчивый');
 
 INSERT INTO Users (email, PASSWORD, first_name, last_name, gender, ROLE)
 VALUES ('user2@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Петя', 'Петров', 0, 0);

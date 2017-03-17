@@ -19,6 +19,7 @@ public final class Constants {
     public static final String OFFSET = "offset";
     public static final String LIMIT = "limit";
     public static final int DEFAULT_LIMIT = 10;
+    public static final String MIN_AVATARS = "minAvatars";
     public static final String RELATION = "relation";
     public static final String RELATION_TYPE = "relationType";
     public static final String USER_LIST = "userList";
@@ -28,6 +29,8 @@ public final class Constants {
     public static final String MESSAGE_MAP = "messageMap";
     public static final String USER_ZONE_ID = "userZoneID";
     public static final String MESSAGE_LIST = "messageList";
+    public static final String PHOTO_DAO = "photoDAO";
+    public static final String PHOTO_SERVICE = "photoService";
 
     private Constants() {
     }

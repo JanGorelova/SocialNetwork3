@@ -63,8 +63,8 @@ public class RelationDAOImplTest {
                 .build();
         relationDAO.create(relation);
 
-        assertTrue(relationDAO.getFriendsID(userID_1).contains(userID_2));
-        assertTrue(relationDAO.getFriendsID(userID_1).contains(userID_3));
+        assertTrue(relationDAO.getFriendsID(userID_1,0,100).contains(userID_2));
+        assertTrue(relationDAO.getFriendsID(userID_1,0,100).contains(userID_3));
     }
 
     @Test
