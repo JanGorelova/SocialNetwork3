@@ -26,6 +26,25 @@ CREATE TABLE IF NOT EXISTS Profiles (
   FOREIGN KEY (id) REFERENCES Users (id),
 );
 
+CREATE TABLE IF NOT EXISTS Photos (
+  id     BIGINT PRIMARY KEY AUTO_INCREMENT,
+  sender BIGINT,
+  time   DATETIME,
+  avatar BOOLEAN            DEFAULT FALSE,
+  link   VARCHAR(255) NOT NULL,
+  FOREIGN KEY (sender) REFERENCES Users (id),
+);
+
+CREATE TABLE IF NOT EXISTS Posts (
+  id        BIGINT PRIMARY KEY AUTO_INCREMENT,
+  sender    BIGINT,
+  recipient BIGINT,
+  time      DATETIME,
+  message   VARCHAR(1000),
+  FOREIGN KEY (sender) REFERENCES Users (id),
+  FOREIGN KEY (recipient) REFERENCES Users (id),
+);
+
 CREATE TABLE IF NOT EXISTS Relations (
   id        BIGINT PRIMARY KEY AUTO_INCREMENT,
   sender    BIGINT NOT NULL,
@@ -134,6 +153,21 @@ INSERT INTO Chat_Participants(participant_id, chat_id, last_read) VALUES (2,3,'2
 INSERT INTO Messages(sender_id, chat_id, text, sending_time) VALUES (1,1,'Хаюшки! Меня зовут Вася, яя тебе пишу новое сообщение!!!','2016-11-14 10:28:42');
 INSERT INTO Messages(sender_id, chat_id, text, sending_time) VALUES (2,2,'Хаюшки! Это приват','2016-11-14 10:28:42');
 INSERT INTO Messages(sender_id, chat_id, text, sending_time) VALUES (2,3,'Хаюшки! И это тоже приват','2016-11-14 10:28:42');
+
+INSERT INTO Posts(sender, recipient, time, message) VALUES (2,1,'2016-11-14 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (3,1,'2016-11-15 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (4,1,'2016-11-16 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (5,1,'2016-11-17 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (6,1,'2016-11-18 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (7,1,'2016-11-19 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (8,1,'2016-11-20 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (9,1,'2016-11-21 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (10,1,'2016-11-22 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (11,1,'2016-11-23 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (12,1,'2016-11-24 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (13,1,'2016-11-25 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (14,1,'2016-11-26 10:30:42','Тестовая запись');
+INSERT INTO Posts(sender, recipient, time, message) VALUES (15,1,'2016-11-27 10:30:42','Тестовая запись');
 
 
 -- INSERT INTO Dialogues (creator, description, last_update) VALUES (1, 'test dialog 1', '2016-11-15 10:28:42');

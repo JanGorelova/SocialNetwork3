@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Solar BIM</title>
+    <title>Template</title>
 
     <jsp:include page="${contextPath}/WEB-INF/jsp/common/css.jsp"/>
 
@@ -23,7 +23,13 @@
 <div class="container" role="main">
     <div class="row">
         <jsp:include page="${contextPath}/WEB-INF/jsp/common/navigation.jsp"/>
-        <div class="col-xs-10 col-md-10 col-lg-10"> 404 Page not found</div>
+        <div class="col-xs-10 col-md-10 col-lg-10">
+            <p>Произошла ошибка.<br>
+                Код ошибки: <c:out value="${requestScope.statusCode}"/><br>
+                Запрос: <c:out value="${requestScope.requestUri}"/><br>
+                <c:if test="${not empty requestScope.errorMsg}">Трассировка: <c:out value="${requestScope.errorMsg}"/></c:if>
+            </p>
+        </div>
     </div>
 </div>
 <jsp:include page="${contextPath}/WEB-INF/jsp/common/scripts.jsp"/>

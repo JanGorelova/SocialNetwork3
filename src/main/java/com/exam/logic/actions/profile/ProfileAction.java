@@ -2,16 +2,17 @@ package com.exam.logic.actions.profile;
 
 import com.exam.logic.Action;
 import com.exam.logic.services.PhotoService;
+import com.exam.logic.services.PostService;
 import com.exam.logic.services.ProfileService;
 import com.exam.logic.services.UserService;
-import com.exam.models.Photo;
-import com.exam.models.Profile;
-import com.exam.models.Relation;
-import com.exam.models.User;
+import com.exam.models.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.exam.logic.Constants.*;
 
@@ -40,7 +41,46 @@ public class ProfileAction implements Action {
 
         PhotoService photoService = (PhotoService) request.getServletContext().getAttribute(PHOTO_SERVICE);
         Optional<Photo> avaOptional = photoService.getUserAva(profile.getId());
-        avaOptional.ifPresent(ava->request.setAttribute("avatar", ava));
+        avaOptional.ifPresent(ava -> request.setAttribute("avatar", ava));
+
+        int offset = Optional.ofNullable(request.getParameter(OFFSET))
+                .map(Integer::parseInt)
+                .orElse(0);
+        request.setAttribute(OFFSET, offset);
+
+        int limit = Optional.ofNullable(request.getParameter(LIMIT))
+                .filter(s -> s.length() > 0)
+                .map(Integer::parseInt)
+                .orElse(DEFAULT_LIMIT);
+        request.setAttribute(LIMIT, limit);
+
+        PostService postService = (PostService) request.getServletContext().getAttribute(POST_SERVICE);
+        List<Post> postList = postService.getPosts(profile.getId(), offset, limit);
+        request.setAttribute(POST_LIST, postList);
+
+        boolean hasNextPage = postService.hasNextPage(profile.getId(), offset, limit);
+        request.setAttribute(HAS_NEXT_PAGE, hasNextPage);
+
+        Map<Long, User> userMap = postList.stream()
+                .map(Post::getSender)
+                .map(userService::getById)
+                .map(Optional::get)
+                .collect(Collectors.toMap(
+                        User::getId,
+                        s -> s,
+                        (id1, id2) -> id1));
+        request.setAttribute(USER_MAP, userMap);
+
+        Map<Long, String> minAvatars = postList.stream()
+                .map(Post::getSender)
+                .map(photoService::getUserAva)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toMap(
+                        Photo::getSender,
+                        Photo::getLinkOfMinPhoto,
+                        (f1, f2) -> f1));
+        request.setAttribute(MIN_AVATARS, minAvatars);
 
         return "/WEB-INF/jsp/profile/profile.jsp";
     }

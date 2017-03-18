@@ -5,10 +5,7 @@ import com.exam.connection_pool.ConnectionPool;
 import com.exam.connection_pool.ConnectionPoolException;
 import com.exam.dao.*;
 import com.exam.dao.h2.*;
-import com.exam.logic.services.ChatService;
-import com.exam.logic.services.PhotoService;
-import com.exam.logic.services.ProfileService;
-import com.exam.logic.services.UserService;
+import com.exam.logic.services.*;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.ServletContext;
@@ -55,8 +52,11 @@ public class Initializer implements ServletContextListener {
         context.setAttribute(CHAT_SERVICE, new ChatService(chatDAO));
 
         PhotoDAO photoDAO=new PhotoDAOImpl(connectionPool);
-
         context.setAttribute(PHOTO_DAO, photoDAO);
         context.setAttribute(PHOTO_SERVICE, new PhotoService(photoDAO));
+
+        PostDAO postDAO= new PostDAOImpl(connectionPool);
+        context.setAttribute(POST_DAO,postDAO);
+        context.setAttribute(POST_SERVICE,new PostService(postDAO));
     }
 }

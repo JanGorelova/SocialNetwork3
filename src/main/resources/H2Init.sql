@@ -27,12 +27,22 @@ CREATE TABLE IF NOT EXISTS Profiles (
 );
 
 CREATE TABLE IF NOT EXISTS Photos (
-  id      BIGINT PRIMARY KEY AUTO_INCREMENT,
-  sender  BIGINT,
-  time    DATETIME,
-  avatar  BOOLEAN DEFAULT FALSE,
-  link    VARCHAR(255) NOT NULL,
+  id     BIGINT PRIMARY KEY AUTO_INCREMENT,
+  sender BIGINT,
+  time   DATETIME,
+  avatar BOOLEAN            DEFAULT FALSE,
+  link   VARCHAR(255) NOT NULL,
   FOREIGN KEY (sender) REFERENCES Users (id),
+);
+
+CREATE TABLE IF NOT EXISTS Posts (
+  id        BIGINT PRIMARY KEY AUTO_INCREMENT,
+  sender    BIGINT,
+  recipient BIGINT,
+  time      DATETIME,
+  message   VARCHAR(1000),
+  FOREIGN KEY (sender) REFERENCES Users (id),
+  FOREIGN KEY (recipient) REFERENCES Users (id),
 );
 
 CREATE TABLE IF NOT EXISTS Relations (

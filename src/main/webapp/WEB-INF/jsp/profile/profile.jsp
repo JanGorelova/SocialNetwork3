@@ -7,7 +7,9 @@
 <jsp:useBean id="user" type="com.exam.models.User" scope="request"/>
 <jsp:useBean id="profile" type="com.exam.models.Profile" scope="request"/>
 <jsp:useBean id="currentUser" type="com.exam.models.User" scope="session"/>
-
+<jsp:useBean id="postList" type="java.util.List" scope="request"/>
+<jsp:useBean id="userMap" type="java.util.Map" scope="request"/>
+<jsp:useBean id="minAvatars" type="java.util.Map" scope="request"/>
 
 <!DOCTYPE html>
 <html lang="${sessionScope.language}">
@@ -181,6 +183,51 @@
                             </c:if>
                         </c:if>
                     </div>
+                </div>
+            </div>
+            <%--Посты на стене--%>
+            <div class="row">
+                <div class="col-xs-12" id="wall">
+                    <%--Форма для нового поста--%>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <form action="${contextPath}/post/new" method="post">
+                                <div class="form-group">
+                                    <label for="message"><fmt:message key="messages.message"/>:</label>
+                                    <input type="hidden" class="form-control" name="recipient" value="${user.id}">
+                                    <input autofocus type="text" class="form-control" id="message" name="text">
+                                </div>
+                                <button type="submit" class="btn btn-success"><fmt:message
+                                        key="messages.send"/></button>
+                            </form>
+                        </div>
+                    </div>
+                    <%--Проходимся по каждому посту--%>
+                    <c:forEach var="post" items="${postList}">
+                        <c:set var="senderId" value="${post.sender}"/>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <c:set var="avaLink" value="${minAvatars[senderId]}"/>
+                                <c:if test="${not empty avaLink}"><img src="${contextPath}/files/${avaLink}"/></c:if>
+                                <c:if test="${empty avaLink}"><img
+                                        src="${contextPath}/static/img/default_ava_min.png"/></c:if>
+                                <br>
+                                    <%--Инициалы и ссылка на профиль автора поста--%>
+                                <a href="${contextPath}/profile?id=${userMap[senderId].id}"
+                                >${userMap[senderId].firstName} ${userMap[senderId].lastName}</a>
+                            </div>
+                            <div class="col-xs-9">
+                                <p>${post.message}</p>
+                            </div>
+                        </div>
+                    </c:forEach>
+                    <%--Сссылки для перехода на предыдущую и следующую страницу--%>
+                    <c:if test="${requestScope.offset>0}"><a
+                            href="${contextPath}/profile?id=${user.id}&offset=${requestScope.offset-requestScope.limit}&limit=${requestScope.limit}">
+                        <fmt:message key="previousPage"/></a> </c:if>
+                    <c:if test="${requestScope.hasNextPage}"><a
+                            href="${contextPath}/profile?id=${user.id}&offset=${requestScope.offset+requestScope.limit}&limit=${requestScope.limit}">
+                        <fmt:message key="nextPage"/></a></c:if>
                 </div>
             </div>
         </div>

@@ -61,6 +61,7 @@
                         Сообщений в этом чате нет (c)КЭП
                     </c:if>
                 </div>
+                <%--Форма для отправки сообщения--%>
                 <form action="${contextPath}/chat/message/new" method="post">
                     <div class="form-group">
                         <label for="message"><fmt:message key="messages.message"/>:</label>
