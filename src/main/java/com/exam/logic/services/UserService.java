@@ -97,10 +97,10 @@ public class UserService {
         if (relation.getType() == NEUTRAL) {
             relation = Relation.builder().sender(id).recipient(recipientID).type(REQUEST).build();
             relationDAO.create(relation);
-        } else throw new RuntimeException("This Relarion exist (hack attack)");
+        } else throw new RuntimeException("This Relation exist (maybe hack attack)");
     }
 
-    public List<User> getIncomings(Long userID, int offset, int limit) {
+    public List<User> getIncoming(Long userID, int offset, int limit) {
         return relationDAO
                 .getIncomingID(userID, offset, limit)
                 .stream()

@@ -11,10 +11,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class Validator {
+    private static Pattern textPattern = Pattern.compile("^([\\s]*[a-zA-Z\\u0430-\\u044f\\u0451\\u0410-\\u042f\\u0401\\-][\\.]*){2,}$");
+    private static Pattern postPattern = Pattern.compile("^([\\s]*[a-zA-Z\\u0430-\\u044f\\u0451\\u0410-\\u042f\\u0401\\-][\\.\\!\\?\\ \\,]*){2,1000}$");
 
     public static ValidCode validateImage(ImageReader reader) throws IOException {
         if ((reader.getWidth(0) < 200) || (reader.getHeight(0) < 200)) return ValidCode.INVALID_PIXEL_SIZE;
         return ValidCode.SUCCESS;
+    }
+
+    public static ValidCode validatePost(String text) {
+        Matcher m = postPattern.matcher(text);
+        if (text.length() == 0 || m.matches()) return ValidCode.SUCCESS;
+        return ValidCode.INVALID_POST_TEXT;
     }
 
     @RequiredArgsConstructor
@@ -31,6 +39,8 @@ public abstract class Validator {
         INVALID_TELEPHONE("error.invalid.telephone"),
         INVALID_ABOUT("error.invalid.about"),
         INVALID_PIXEL_SIZE("error.invalid.pixelSize"),
+        INVALID_POST_TEXT("error.invalid.post.text"),
+        INVALID_POST_SIZE("error.invalid.post.size"),
         SUCCESS("success");
         @Getter
         private final String propertyName;
@@ -103,9 +113,7 @@ public abstract class Validator {
     private static boolean isValidText(String text, int maxChars) {
         if (text.length() == 0) return true;
         if (text.length() > maxChars) return false;
-        String nPattern = "^([\\s]*[a-zA-Z\\u0430-\\u044f\\u0451\\u0410-\\u042f\\u0401\\-]){2,}$";
-        Pattern p = Pattern.compile(nPattern);
-        Matcher m = p.matcher(text);
+        Matcher m = textPattern.matcher(text);
         return m.matches();
     }
 

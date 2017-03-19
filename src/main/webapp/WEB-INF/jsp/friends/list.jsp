@@ -35,10 +35,11 @@
                     <c:forEach var="user" items="${requestScope.friendsList}">
                         <div class="row">
                             <div class="col-xs-3">
+                                <%--Аватарка--%>
                                 <a href="${contextPath}/profile?id=${user.id}">
                                     <c:set var="avaLink" value="${requestScope.minAvatars.get[user.id]}"/>
                                     <c:if test="${not empty avaLink}"><img src="${contextPath}/files/${avaLink}"/></c:if>
-                                    <c:if test="${empty avaLink}"><img src="${contextPath}/static/img/default_ava_min.png"/></c:if>
+                                    <c:if test="${empty avaLink}"><img width="100" height="100" src="${contextPath}/static/img/default_ava_min.png"/></c:if>
                                 </a>
                             </div>
                             <div class="col-xs-6">
@@ -62,9 +63,11 @@
                             </div>
                         </div>
                     </c:forEach>
+                    <%--Кнопка Previous при необходимост--%>
                     <c:if test="${requestScope.offset>0}"><a
                             href="${contextPath}/friends?offset=${requestScope.offset-requestScope.limit}&limit=${requestScope.limit}">
                         <fmt:message key="previousPage"/></a> </c:if>
+                    <%--Кнопка Next при необходимост--%>
                     <c:if test="${requestScope.hasNextPage}"><a
                             href="${contextPath}/friends?offset=${requestScope.offset+requestScope.limit}&limit=${requestScope.limit}">
                         <fmt:message key="nextPage"/></a> </c:if>

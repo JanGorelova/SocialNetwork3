@@ -33,7 +33,11 @@
                     <c:forEach var="user" items="${requestScope.userList}">
                         <div class="row">
                             <div class="col-xs-3">
-                                <a href="${contextPath}/profile?id=${user.id}">Пикча</a>
+                                <a href="${contextPath}/profile?id=${user.id}">
+                                    <c:set var="avaLink" value="${requestScope.minAvatars.get[user.id]}"/>
+                                    <c:if test="${not empty avaLink}"><img src="${contextPath}/files/${avaLink}"/></c:if>
+                                    <c:if test="${empty avaLink}"><img width="100" height="100" src="${contextPath}/static/img/default_ava_min.png"/></c:if>
+                                </a>
                             </div>
                             <div class="col-xs-6">
                                 <p style="font-size: 2em"><a
@@ -41,7 +45,7 @@
                                 </p>
                             </div>
                             <div class="col-xs-3">
-                                <a href="${contextPath}/messages?recipient=${user.id}"
+                                <a href="${contextPath}/chat/private?recipient_id=${user.id}"
                                    class="btn btn-success btn-block"><fmt:message key="friends.writeMessage"/></a><br>
                                 <a href="/id${user.id}" class="btn btn-info btn-block"><fmt:message
                                         key="friends.goToPage"/></a><br>

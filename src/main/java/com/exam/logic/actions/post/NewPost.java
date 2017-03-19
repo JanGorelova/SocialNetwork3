@@ -2,6 +2,7 @@ package com.exam.logic.actions.post;
 
 import com.exam.logic.Action;
 import com.exam.logic.services.PostService;
+import com.exam.logic.services.Validator;
 import com.exam.models.Post;
 import com.exam.models.User;
 import lombok.SneakyThrows;
@@ -32,7 +33,8 @@ public class NewPost implements Action {
 
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute(CURRENT_USER);
-
+        Validator.ValidCode code = Validator.validatePost(text);
+        if (code != Validator.ValidCode.SUCCESS) throw new RuntimeException("Invalid text of post");
         Post post = Post.builder()
                 .recipient(recipient)
                 .message(text)

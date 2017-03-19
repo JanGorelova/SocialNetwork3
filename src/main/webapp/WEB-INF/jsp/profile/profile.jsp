@@ -210,7 +210,7 @@
                                 <c:set var="avaLink" value="${minAvatars[senderId]}"/>
                                 <c:if test="${not empty avaLink}"><img src="${contextPath}/files/${avaLink}"/></c:if>
                                 <c:if test="${empty avaLink}"><img
-                                        src="${contextPath}/static/img/default_ava_min.png"/></c:if>
+                                        src="${contextPath}/static/img/default_ava_miсro.png"/></c:if>
                                 <br>
                                     <%--Инициалы и ссылка на профиль автора поста--%>
                                 <a href="${contextPath}/profile?id=${userMap[senderId].id}"

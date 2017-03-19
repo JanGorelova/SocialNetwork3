@@ -51,7 +51,11 @@
                     <c:forEach var="user" items="${requestScope.userList}">
                         <div class="row">
                             <div class="col-xs-3">
-                                <a href="${contextPath}/profile?id=${user.id}">Пикча</a>
+                                <a href="${contextPath}/profile?id=${user.id}">
+                                    <c:set var="avaLink" value="${requestScope.minAvatars.get[user.id]}"/>
+                                    <c:if test="${not empty avaLink}"><img src="${contextPath}/files/${avaLink}"/></c:if>
+                                    <c:if test="${empty avaLink}"><img src="${contextPath}/static/img/default_ava_min.png"/></c:if>
+                                </a>
                             </div>
                             <div class="col-xs-6">
                                 <p style="font-size: 2em"><a

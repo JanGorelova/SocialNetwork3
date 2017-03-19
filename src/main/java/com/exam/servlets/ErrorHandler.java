@@ -33,6 +33,7 @@ public class ErrorHandler extends HttpServlet {
         NOT_AUTH("error.notAuth"),
         SELECT_FILE_ERROR("error.selectFile"),
         FILE_UPLOAD_ERROR("error.fileUpload"),
+        INVALID_TEXT_OF_POST("error.post.invalid"),
         EMAIL_ALREADY_EXIST("error.emailExist");
 
         @Getter
@@ -50,10 +51,6 @@ public class ErrorHandler extends HttpServlet {
     }
 
     private void requestProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String code = request.getParameter("code");
-//        String msg = request.getAttribute(ERROR_MSG) != null ? (String) request.getAttribute(ERROR_MSG) :
-//                code.equals("404") ? ERROR_404.getPropertyName() : COMMON_ERROR.getPropertyName();
-//        request.setAttribute(ERROR_MSG, msg);
         Throwable throwable = (Throwable) request
                 .getAttribute("javax.servlet.error.exception");
         log.error(throwable);
