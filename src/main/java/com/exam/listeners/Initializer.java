@@ -19,7 +19,6 @@ import static com.exam.logic.Constants.*;
 @WebListener
 public class Initializer implements ServletContextListener {
 
-
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();

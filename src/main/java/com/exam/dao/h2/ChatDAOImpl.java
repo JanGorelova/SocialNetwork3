@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -73,7 +74,7 @@ public class ChatDAOImpl implements ChatDAO {
         try (Connection connection = connectionPool.takeConnection()) {
             executeUpdate(connection,
                     "UPDATE Chat_Participants SET last_read=? WHERE chat_id=? AND participant_id=?",
-                    Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDateTime()), chatID, userId);
+                    Timestamp.from(Instant.now()), chatID, userId);
             messageList = executeQuery(connection,
                     "SELECT m.id, m.text, m.sender_id, m.chat_id, m.sending_time, u.first_name FROM Messages AS m " +
                             "LEFT JOIN Users AS u WHERE m.chat_id = ? " +
@@ -127,10 +128,10 @@ public class ChatDAOImpl implements ChatDAO {
         try {
             return Optional
                     .ofNullable(rs.getTimestamp(column))
-                    .map(Timestamp::toLocalDateTime)
-                    .map(localDateTime -> ZonedDateTime.of(localDateTime, zoneId));
+                    .map(Timestamp::toInstant)
+                    .map(instant -> ZonedDateTime.ofInstant(instant,zoneId));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -138,8 +139,7 @@ public class ChatDAOImpl implements ChatDAO {
     public Message getLastShortMessage(Long chatID, ZoneId zoneId) {
         Message message;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
-            message = (Message) executeQuery(connection,
+            message = executeQuery(connection,
                     "SELECT m.id, m.text, m.sender_id, m.chat_id, m.sending_time, u.first_name FROM Messages AS m " +
                             "LEFT JOIN Users AS u WHERE m.chat_id = ? " +
                             "AND u.id=m.sender_id ORDER BY m.sending_time DESC LIMIT 1 OFFSET 0",
@@ -199,8 +199,7 @@ public class ChatDAOImpl implements ChatDAO {
     public Long countMessage(Long chatID) {
         Long count;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
-            count = (Long) executeQuery(connection,
+            count = executeQuery(connection,
                     "SELECT (SELECT COUNT(*) FROM Messages) - " +
                             "  (SELECT COUNT(*) FROM Messages where chat_id<?) -" +
                             "  (SELECT COUNT(*) FROM Messages where chat_id>?)" +
@@ -218,7 +217,6 @@ public class ChatDAOImpl implements ChatDAO {
     public Optional<Chat> getBetween(Long senderID, Long recipientID) {
         Optional<Chat> chatOptional;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
             chatOptional = executeQuery(connection,
                     "SELECT * FROM Chats INNER JOIN (SELECT cp1.chat_id filtered_id FROM (SELECT chat_id FROM Chat_Participants " +
                             "WHERE participant_id=?) AS cp1 " +

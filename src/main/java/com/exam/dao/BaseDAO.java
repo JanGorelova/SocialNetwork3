@@ -12,32 +12,33 @@ import java.util.stream.Stream;
 public interface BaseDAO<E, K> {
     void create(E entity);
 
+    /**
+     * Метод возвращает объект из базы данных, найденный по первичному ключу
+     * @param key первичный ключ
+     * @return Optional, который содержит объект в случае его существования в БД
+     */
     Optional<E> read(K key);
 
+    /**
+     * Обновление состояния сущности в БД
+     * @param entity сущность
+     */
     void update(E entity);
 
+    /**
+     * Метод для удаления записи в БД по первичному ключу
+     * @param id первичный ключ
+     */
     void delete(K id);
 
-//    default Optional<E> uniqueQuery(Connection connection,
-//                                    String sql,
-//                                    ResultSetProcessor<E> processor,
-//                                    Object... params) {
-//        Optional<E> resultOptional = Optional.empty();
-//        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-//            int cnt = 0;
-//            for (Object param : params) {
-//                ps.setObject(++cnt, param);
-//            }
-//            try (ResultSet rs = ps.executeQuery()) {
-//                if (rs.next()) {
-//                    resultOptional=Optional.of(processor.execute(rs));
-//                }
-//            }
-//        } catch (SQLException e) {
-//            throw new DaoException(e);
-//        }
-//        return resultOptional;
-//    }
+    /**
+     * Метод для запросов в базу данных
+     * @param sql текст запроса
+     * @param processor обработчик результатов
+     * @param params параметры запроса
+     * @param <T> объект запроса
+     * @return обобщённый объект запроса
+     */
     default <T> List<T> executeQuery(Connection connection,
                                    String sql,
                                    ResultSetProcessor<T> processor,
@@ -58,6 +59,12 @@ public interface BaseDAO<E, K> {
         }
         return list;
     }
+
+    /**
+     * Метод для обновления и удаления данных.
+     * @param sql текст запроса
+     * @param params параметры, передаваемые в запросе
+     */
     default void executeUpdate(Connection connection,
                                String sql,
                                Object... params) {

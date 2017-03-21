@@ -31,7 +31,7 @@ import static com.exam.logic.Constants.*;
 
 @Log4j
 public class Avatar implements Action {
-    Random random = new Random();
+    private Random random = new Random();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -77,7 +77,7 @@ public class Avatar implements Action {
         ProfileService profileService = (ProfileService) request.getServletContext().getAttribute(PROFILE_SERVICE);
         User currentUser = (User) request.getSession().getAttribute(CURRENT_USER);
         Profile profile = profileService.getById(currentUser.getId());
-        request.setAttribute(SUCCESS_MSG,"success.changes");
+        request.setAttribute(SUCCESS_MSG, "success.changes");
         request.setAttribute(PROFILE, profile);
         return "/WEB-INF/jsp/profile/edit.jsp";
     }
@@ -85,19 +85,18 @@ public class Avatar implements Action {
     /**
      * Сохраняет файл на сервере, в папке upload.
      *
-     * @param item
-     * @throws Exception
+     * @throws Exception, если проблема с FileItem
      */
     private void processUploadedFile(FileItem item, HttpServletRequest request) throws Exception {
-        ServletContext context=request.getServletContext();
-        File uploadetFile = null;
+        ServletContext context = request.getServletContext();
+        File uploadetFile;
         String path = context.getRealPath("/files/");
         File directory = new File(path);
         if (!directory.exists()) directory.mkdir();
         //выбираем файлу имя пока не найдём свободное
         String link;
         do {
-            link=Math.abs(random.nextInt()) + item.getName();
+            link = Math.abs(random.nextInt()) + item.getName();
             String avaPath = path + link;
             uploadetFile = new File(avaPath);
         } while (uploadetFile.exists());
@@ -127,7 +126,8 @@ public class Avatar implements Action {
                     log.debug("last index:" + path.lastIndexOf("\\"));
                     log.debug(path.substring(0, path.lastIndexOf("\\")) + "\\min_" + path.substring(path.lastIndexOf("\\")) + 1);
                     //если у файла нет расширение, то кидаем исключение
-                    if (path.lastIndexOf("\\")>path.lastIndexOf(".")) throw new RuntimeException("Invalid file extension: "+path);
+                    if (path.lastIndexOf("\\") > path.lastIndexOf("."))
+                        throw new RuntimeException("Invalid file extension: " + path);
                     file = new File(path.substring(0, path.lastIndexOf(".")) + "_min" + path.substring(path.lastIndexOf(".")));
                     ImageIO.write(scaledImage, "jpg", file);
                 }

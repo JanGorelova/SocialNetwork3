@@ -13,7 +13,6 @@ public class LocaleAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         session.setAttribute("language", request.getParameter("language"));
-        session.setAttribute("successMsg", "success.change.local");
         String referer = request.getHeader("referer");
         response.sendRedirect(referer != null ? referer : request.getContextPath());
         return null;

@@ -26,10 +26,10 @@ public class SecurityFilter extends HttpFilter {
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String path = Optional.ofNullable(request.getRequestURI()).orElse("");
-        //log.debug("Path: " + path);
         if (!staticMatcher.reset(path).find()
                 && !securityMatcher.reset(path).find()
                 && !notAuthMatcher.reset(path).find()) {
+            //если запрос в авторизованную зону, то проверяем авторизацию
             HttpSession session = request.getSession(true);
             if (session.getAttribute(CURRENT_USER) != null)
                 chain.doFilter(request, response);

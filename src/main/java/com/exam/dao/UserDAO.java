@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDAO extends BaseDAO<User, Long> {
+    /**
+     * Метод вовращает пользователя, найденого в БД по email
+     * @return Optional
+     */
     Optional<User> getByEmail(String email);
-
-    List<User> getFriends(Long id, Integer offset, Integer limit);
 
     List<User> getByName(String name, Integer offset, Integer limit);
 

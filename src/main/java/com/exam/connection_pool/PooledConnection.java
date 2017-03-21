@@ -5,16 +5,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-@SuppressWarnings("WeakerAccess")
 public class PooledConnection implements Connection {
     private Connection connection;
 
-    public PooledConnection(Connection c) throws SQLException {
+    PooledConnection(Connection c) throws SQLException {
         this.connection = c;
         this.connection.setAutoCommit(true);
     }
 
-    public void reallyClose() throws SQLException {
+    void reallyClose() throws SQLException {
         connection.close();
     }
 

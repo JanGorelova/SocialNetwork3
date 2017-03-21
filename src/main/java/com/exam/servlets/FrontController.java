@@ -35,7 +35,7 @@ public class FrontController extends HttpServlet {
     @SneakyThrows
     public void init(ServletConfig config) {
         super.init(config);
-        actionFactory = new ActionFactory();
+        actionFactory = ActionFactory.INSTANCE;
     }
 
     @Override

@@ -16,12 +16,13 @@ import com.exam.logic.actions.upload.Avatar;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Log4j
 public class ActionFactory {
-    private Map<String, Action> actions = new ConcurrentHashMap<>();
+    private Map<String, Action> actions = new HashMap<>();
+    public static final ActionFactory INSTANCE = new ActionFactory();
 
     public ActionFactory() {
         actions.put("GET/data/my", (r, s) -> "/jsp/data/my.jsp");

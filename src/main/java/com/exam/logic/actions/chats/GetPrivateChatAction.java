@@ -36,7 +36,7 @@ public class GetPrivateChatAction implements Action {
         if (chatOptional.isPresent()) {
             response.sendRedirect("/chat/window?chat_id=" + chatOptional.get().getId());
         } else {
-            List<Long> participantsID=new ArrayList<>();
+            List<Long> participantsID = new ArrayList<>();
             participantsID.add(currentUser.getId());
             participantsID.add(recipientID);
             Chat chat = Chat.builder()
@@ -47,7 +47,8 @@ public class GetPrivateChatAction implements Action {
                     .build();
             chatService.newChat(chat);
             chatOptional = chatService.getChatBeetwen(currentUser.getId(), recipientID);
-            response.sendRedirect("/chat/window?chat_id=" + chatOptional.orElseThrow(RuntimeException::new).getId());
+            long chatId = chatOptional.orElseThrow(() -> new RuntimeException("Chat was not created")).getId();
+            response.sendRedirect("/chat/window?chat_id=" + chatId);
         }
         return null;
     }

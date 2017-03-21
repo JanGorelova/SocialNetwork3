@@ -88,6 +88,7 @@ public class UserDAOImpl implements UserDAO {
 //        } catch (SQLException e) {
 //            throw new DaoException(e);
 //        }
+        throw new DaoException("Method was not implemented");
     }
 
     @Override
@@ -125,28 +126,11 @@ public class UserDAOImpl implements UserDAO {
     public List<User> getByNames(String firstName, String lastName, Integer offset, Integer limit) {
         List<User> list;
         try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
             list = executeQuery(connection,
                     "(SELECT * FROM Users WHERE first_name = ? AND last_name=? " +
                             "UNION SELECT * FROM Users WHERE first_name = ? AND last_name=?) LIMIT ? OFFSET ?",
                     userBuilderFromRS,
                     firstName, lastName, lastName, firstName, limit, offset);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-        return list;
-    }
-
-    @Override
-    public List<User> getFriends(Long id, Integer offset, Integer limit) {
-        List<User> list;
-        try (Connection connection = connectionPool.takeConnection()) {
-            //noinspection unchecked
-            list = executeQuery(connection,
-                    "SELECT * FROM Users WHERE id= (SELECT recipient r_id FROM Relations WHERE sender=? AND type=3 UNION " +
-                            "SELECT sender r_id FROM Relations WHERE recipient=? AND type=3) LIMIT ? OFFSET ?",
-                    userBuilderFromRS,
-                    id, id, limit, offset);
         } catch (SQLException e) {
             throw new DaoException(e);
         }

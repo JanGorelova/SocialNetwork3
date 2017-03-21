@@ -1,8 +1,6 @@
 package com.exam.filters;
 
 
-
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
@@ -14,17 +12,14 @@ import java.io.IOException;
 @WebFilter("/*")
 public class SetCharFilter extends HttpFilter {
 
-    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain next)
+    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
-// чтение кодировки из запроса
-
+        // чтение кодировки из запроса
         String encoding = request.getCharacterEncoding();
 
-// установка UTF-8, если не установлена
-
+        // установка UTF-8, если не установлена
         if (!"UTF-8".equals(encoding))
             request.setCharacterEncoding("UTF-8");
-        next.doFilter(request, response);
+        chain.doFilter(request, response);
     }
 }
