@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="custom" uri="/WEB_INF/taglib.tld" %>
+
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="text"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
@@ -217,7 +219,8 @@
                                 >${userMap[senderId].firstName} ${userMap[senderId].lastName}</a>
                             </div>
                             <div class="col-xs-9">
-                                <p>${post.message}</p>
+                                <p>${post.message}</p><br>
+                                Время отправки: <custom:format time="${post.time}"/>
                             </div>
                         </div>
                     </c:forEach>
