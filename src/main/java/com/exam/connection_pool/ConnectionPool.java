@@ -4,6 +4,7 @@ package com.exam.connection_pool;
 import com.exam.util.ExceptionalConsumer;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -19,7 +20,7 @@ import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.stream.Collectors;
-
+@Log4j
 public class ConnectionPool {
     @Getter
     private static ConnectionPool instance;
@@ -46,7 +47,7 @@ public class ConnectionPool {
             this.password = dbProperties.getProperty("password");
             this.poolSize = Integer.parseInt(dbProperties.getProperty("poolSize"));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 

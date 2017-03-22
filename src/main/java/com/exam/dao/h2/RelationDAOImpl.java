@@ -72,17 +72,27 @@ public class RelationDAOImpl implements RelationDAO {
     public void addFriend(Long sender, Long recipient) {
         int existType = getBetween(sender, recipient).getType();
         if (existType != INCOMING) throw new DaoException("Invalid relation type");
+        Throwable error = null;
         try (Connection connection = connectionPool.takeConnection()) {
-            connection.setAutoCommit(false);
-            executeUpdate(connection,
-                    "DELETE FROM Relations WHERE id=(SELECT id FROM Relations WHERE sender=? AND recipient=? " +
-                            "UNION SELECT id FROM Relations WHERE recipient=? AND sender=?)",
-                    sender, recipient, sender, recipient);
-            executeUpdate(connection,
-                    "INSERT INTO Relations (sender, recipient, type) VALUES (?, ?, ?)",
-                    sender, recipient, FRIEND);
-            connection.commit();
+            try {
+                connection.setAutoCommit(false);
+                executeUpdate(connection,
+                        "DELETE FROM Relations WHERE id=(SELECT id FROM Relations WHERE sender=? AND recipient=? " +
+                                "UNION SELECT id FROM Relations WHERE recipient=? AND sender=?)",
+                        sender, recipient, sender, recipient);
+                executeUpdate(connection,
+                        "INSERT INTO Relations (sender, recipient, type) VALUES (?, ?, ?)",
+                        sender, recipient, FRIEND);
+                connection.commit();
+            } catch (SQLException e) {
+                error = e;
+                connection.rollback();
+                throw e;
+            } finally {
+                connection.setAutoCommit(true);
+            }
         } catch (SQLException e) {
+            if (error != null) e.addSuppressed(error);
             throw new DaoException(e);
         }
     }

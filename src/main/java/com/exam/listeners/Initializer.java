@@ -50,12 +50,12 @@ public class Initializer implements ServletContextListener {
         context.setAttribute(CHAT_DAO, profileDAO);
         context.setAttribute(CHAT_SERVICE, new ChatService(chatDAO));
 
-        PhotoDAO photoDAO=new PhotoDAOImpl(connectionPool);
+        PhotoDAO photoDAO = new PhotoDAOImpl(connectionPool);
         context.setAttribute(PHOTO_DAO, photoDAO);
         context.setAttribute(PHOTO_SERVICE, new PhotoService(photoDAO));
 
-        PostDAO postDAO= new PostDAOImpl(connectionPool);
-        context.setAttribute(POST_DAO,postDAO);
-        context.setAttribute(POST_SERVICE,new PostService(postDAO));
+        PostDAO postDAO = new PostDAOImpl(connectionPool);
+        context.setAttribute(POST_DAO, postDAO);
+        context.setAttribute(POST_SERVICE, new PostService(postDAO));
     }
 }

@@ -2,10 +2,8 @@ package com.exam.logic.actions.chats;
 
 import com.exam.logic.Action;
 import com.exam.logic.services.ChatService;
-import com.exam.logic.services.PhotoService;
 import com.exam.models.Chat;
 import com.exam.models.Message;
-import com.exam.models.Photo;
 import com.exam.models.User;
 import lombok.extern.log4j.Log4j;
 
@@ -23,6 +21,7 @@ import static com.exam.logic.Constants.*;
 
 @Log4j
 public class ChatListAction implements Action {
+    private ChatService chatService;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -35,7 +34,7 @@ public class ChatListAction implements Action {
                 .map(Integer::parseInt)
                 .orElse(DEFAULT_LIMIT);
 
-        ChatService chatService = (ChatService) request.getServletContext().getAttribute(CHAT_SERVICE);
+        if (chatService == null) init(request);
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute(CURRENT_USER);
 
@@ -66,5 +65,9 @@ public class ChatListAction implements Action {
         request.setAttribute(HAS_NEXT_PAGE, hasNextPage);
 
         return "/WEB-INF/jsp/chats/list.jsp";
+    }
+
+    private void init(HttpServletRequest request) {
+        chatService = (ChatService) request.getServletContext().getAttribute(CHAT_SERVICE);
     }
 }

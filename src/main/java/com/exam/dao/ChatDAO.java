@@ -54,5 +54,5 @@ public interface ChatDAO extends BaseDAO<Chat, Long> {
      * @param recipientID идентификатор второго собеседника
      * @return Optional объекта Chat
      */
-    Optional<Chat> getBetween(Long senderID, Long recipientID);
+    Optional<Chat> getChatBetween(Long senderID, Long recipientID);
 }

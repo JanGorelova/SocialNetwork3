@@ -205,7 +205,7 @@
                         </div>
                     </div>
                     <%--Проходимся по каждому посту--%>
-                    <c:forEach var="post" items="${postList}">
+                    <%--<c:forEach var="post" items="${postList}">
                         <c:set var="senderId" value="${post.sender}"/>
                         <div class="row">
                             <div class="col-xs-3">
@@ -214,7 +214,7 @@
                                 <c:if test="${empty avaLink}"><img
                                         src="${contextPath}/static/img/default_ava_miсro.png"/></c:if>
                                 <br>
-                                    <%--Инициалы и ссылка на профиль автора поста--%>
+                                    &lt;%&ndash;Инициалы и ссылка на профиль автора поста&ndash;%&gt;
                                 <a href="${contextPath}/profile?id=${userMap[senderId].id}"
                                 >${userMap[senderId].firstName} ${userMap[senderId].lastName}</a>
                             </div>
@@ -223,7 +223,44 @@
                                 Время отправки: <custom:format time="${post.time}"/>
                             </div>
                         </div>
-                    </c:forEach>
+                    </c:forEach>--%>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Автор</th>
+                            <th>Текст поста</th>
+                            <th>Создан</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="post" items="${postList}">
+                            <c:set var="senderId" value="${post.sender}"/>
+                            <tr>
+                                <td>
+                                    <c:set var="avaLink" value="${minAvatars[senderId]}"/>
+                                    <c:if test="${not empty avaLink}"><img
+                                            src="${contextPath}/files/${avaLink}"/></c:if>
+                                    <c:if test="${empty avaLink}"><img
+                                            src="${contextPath}/static/img/default_ava_miсro.png"/></c:if>
+                                    <br>
+                                        <%--Инициалы и ссылка на профиль автора поста--%>
+                                    <a href="${contextPath}/profile?id=${userMap[senderId].id}"
+                                    >${userMap[senderId].firstName} ${userMap[senderId].lastName}</a>
+                                </td>
+                                <td>
+                                    <p>${post.message}</p><br>
+                                    <c:if test="${currentUser.id==post.sender||currentUser.id==post.recipient}">
+                                        <form action="${contextPath}/post/delete" method="post">
+                                            <input type="hidden" name="post_id" value="${post.id}">
+                                            <input type="submit" value="удалить пост">
+                                        </form>
+                                    </c:if>
+                                </td>
+                                <td><custom:format time="${post.time}"/></td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                     <%--Сссылки для перехода на предыдущую и следующую страницу--%>
                     <c:if test="${requestScope.offset>0}"><a
                             href="${contextPath}/profile?id=${user.id}&offset=${requestScope.offset-requestScope.limit}&limit=${requestScope.limit}">

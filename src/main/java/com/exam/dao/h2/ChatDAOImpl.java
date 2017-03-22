@@ -45,6 +45,8 @@ public class ChatDAOImpl implements ChatDAO {
             } catch (Exception e) {
                 connection.rollback();
                 throw e;
+            } finally {
+                connection.setAutoCommit(true);
             }
             connection.commit();
         } catch (SQLException e) {
@@ -54,18 +56,57 @@ public class ChatDAOImpl implements ChatDAO {
 
     @Override
     public Optional<Chat> read(Long key) {
-        // TODO: 30.01.2017 реализовать
-        return null;
+        Optional<Chat> optional;
+        try (Connection connection = connectionPool.takeConnection()) {
+
+            optional = executeQuery(connection,
+                    "SELECT * FROM Chats WHERE id=?",
+                    rs -> {
+                        Chat.ChatBuilder builder = Chat.builder()
+                                .id(rs.getLong("id"))
+                                .creatorID(rs.getLong("creator_id"))
+                                .name(rs.getString("name"))
+                                .lastUpdate(SQLtoTime("last_update", ZoneId.of("UTC"), rs).get())
+                                .description(rs.getString("description"))
+                                .startTime(SQLtoTime("start_time", ZoneId.of("UTC"), rs).get())
+                                .lastRead(SQLtoTime("last_read", ZoneId.of("UTC"), rs)
+                                        .orElseGet(() -> SQLtoTime("start_time", ZoneId.of("UTC"), rs).get()));
+                        return builder.build();
+                    },
+                    key).stream().findFirst();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return optional;
     }
 
     @Override
-    public void update(Chat entity) {
-        // TODO: 30.01.2017 реализовать
+    public void update(Chat chat) {
+        try (Connection connection = connectionPool.takeConnection()) {
+            Timestamp lastUpdate = Timestamp.from(chat.getLastUpdate().toInstant());
+            Timestamp startTime = Timestamp.from(chat.getStartTime().toInstant());
+            executeUpdate(connection,
+                    "UPDATE Chats SET name=?, creator_id=?, description=?, last_update=?, start_time=?  WHERE id=?",
+                    chat.getName(),
+                    chat.getCreatorID(),
+                    chat.getDescription(),
+                    lastUpdate,
+                    startTime,
+                    chat.getId());
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public void delete(Long id) {
-        // TODO: 30.01.2017 реализовать
+        try (Connection connection = connectionPool.takeConnection()) {
+            executeUpdate(connection,
+                    "DELETE FROM Chats WHERE id=?",
+                    id);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
@@ -129,7 +170,7 @@ public class ChatDAOImpl implements ChatDAO {
             return Optional
                     .ofNullable(rs.getTimestamp(column))
                     .map(Timestamp::toInstant)
-                    .map(instant -> ZonedDateTime.ofInstant(instant,zoneId));
+                    .map(instant -> ZonedDateTime.ofInstant(instant, zoneId));
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -185,11 +226,11 @@ public class ChatDAOImpl implements ChatDAO {
                         "UPDATE Chats SET last_update=? WHERE id=?",
                         Timestamp.valueOf(message.getSendingTime().toLocalDateTime()),
                         message.getChatID());
+                connection.commit();
             } catch (RuntimeException e) {
                 connection.rollback();
                 throw e;
             }
-            connection.commit();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -214,7 +255,7 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
     @Override
-    public Optional<Chat> getBetween(Long senderID, Long recipientID) {
+    public Optional<Chat> getChatBetween(Long senderID, Long recipientID) {
         Optional<Chat> chatOptional;
         try (Connection connection = connectionPool.takeConnection()) {
             chatOptional = executeQuery(connection,

@@ -9,6 +9,7 @@ import com.exam.logic.actions.chats.MessageListAction;
 import com.exam.logic.actions.chats.SendMessageAction;
 import com.exam.logic.actions.friends.*;
 import com.exam.logic.actions.post.NewPost;
+import com.exam.logic.actions.post.PostCleaner;
 import com.exam.logic.actions.profile.ProfileAction;
 import com.exam.logic.actions.profile.ProfileEditGetAction;
 import com.exam.logic.actions.profile.ProfileEditPostAction;
@@ -50,6 +51,7 @@ public class ActionFactory {
         actions.put("GET/chat/private", new GetPrivateChatAction());
         actions.put("POST/upload/avatar", new Avatar());
         actions.put("POST/post/new", new NewPost());
+        actions.put("POST/post/delete", new PostCleaner());
     }
 
     public Action getAction(HttpServletRequest request) {

@@ -20,17 +20,25 @@ public class PhotoDAOImpl implements PhotoDAO {
         if (photo.isAvatar()) {
             //если это аватарка, то необходимо затереть старую запись
             try (Connection connection = connectionPool.takeConnection()) {
-                connection.setAutoCommit(false);
-                executeUpdate(connection,
-                        "DELETE FROM Photos WHERE sender=? AND avatar=true",
-                        photo.getSender());
-                executeUpdate(connection,
-                        "INSERT INTO Photos (sender, time, avatar, link) VALUES(?,?,?,?)",
-                        photo.getSender(),
-                        Timestamp.from(photo.getTime()),
-                        photo.isAvatar(),
-                        photo.getLink());
-                connection.commit();
+                try {
+                    connection.setAutoCommit(false);
+                    executeUpdate(connection,
+                            "DELETE FROM Photos WHERE sender=? AND avatar=true",
+                            photo.getSender());
+                    executeUpdate(connection,
+                            "INSERT INTO Photos (sender, time, avatar, link) VALUES(?,?,?,?)",
+                            photo.getSender(),
+                            Timestamp.from(photo.getTime()),
+                            photo.isAvatar(),
+                            photo.getLink());
+                    connection.commit();
+                } catch (SQLException e){
+                    connection.rollback();
+                    throw e;
+                }
+                finally {
+                    connection.setAutoCommit(true);
+                }
             } catch (SQLException e) {
                 throw new DaoException(e);
             }

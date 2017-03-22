@@ -69,9 +69,9 @@ public interface BaseDAO<E, K> {
                                String sql,
                                Object... params) {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            int cnt = 0;
+            int count = 0;
             for (Object param : params) {
-                ps.setObject(++cnt, param);
+                ps.setObject(++count, param);
             }
             ps.executeUpdate();
         } catch (SQLException e) {

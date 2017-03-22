@@ -35,7 +35,6 @@ public final class Constants {
     public static final String PHOTO_SERVICE = "photoService";
     public static final String POST_DAO = "postDAO";
     public static final String POST_SERVICE = "postService";
-    public static final String ZONE_ID = "zoneId";
 
     private Constants() {
     }

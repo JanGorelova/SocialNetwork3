@@ -19,16 +19,13 @@ import java.util.regex.Pattern;
 @WebFilter(urlPatterns = {"/*"})
 public class SecurityFilter extends HttpFilter {
     private static final String CURRENT_USER = "currentUser";
-    private Matcher staticMatcher = Pattern.compile("^\\/static\\/.*").matcher("");
-    private Matcher securityMatcher = Pattern.compile("\\/j_security_check$").matcher("");
-    private Matcher notAuthMatcher = Pattern.compile("^\\/not_auth\\/.*").matcher("");
+    private Pattern notAuthPattern = Pattern.compile("^((\\/static\\/.*)|(\\/j_security_check$)|(^\\/not_auth\\/.*))");
 
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String path = Optional.ofNullable(request.getRequestURI()).orElse("");
-        if (!staticMatcher.reset(path).find()
-                && !securityMatcher.reset(path).find()
-                && !notAuthMatcher.reset(path).find()) {
+        Matcher newMatcher = notAuthPattern.matcher(path);
+        if (!newMatcher.find()) {
             //если запрос в авторизованную зону, то проверяем авторизацию
             HttpSession session = request.getSession(true);
             if (session.getAttribute(CURRENT_USER) != null)

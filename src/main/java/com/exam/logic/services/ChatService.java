@@ -34,7 +34,7 @@ public class ChatService {
     }
 
     public Optional<Chat> getChatBeetwen(Long senderID, Long recipientID) {
-        return chatDAO.getBetween(senderID,recipientID);
+        return chatDAO.getChatBetween(senderID,recipientID);
     }
 
     public void newChat(Chat chat) {

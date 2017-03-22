@@ -13,7 +13,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.exam.logic.Constants.ZONE_ID;
+import static com.exam.logic.Constants.USER_ZONE_ID;
 
 @Log4j
 @Setter
@@ -25,7 +25,7 @@ public class TimeFormatter extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         JspWriter out = pageContext.getOut();
-        ZoneId zoneId = (ZoneId) pageContext.getSession().getAttribute(ZONE_ID);
+        ZoneId zoneId = (ZoneId) pageContext.getSession().getAttribute(USER_ZONE_ID);
         if (zoneId == null) zoneId = ZoneId.of("UTC");
         ZonedDateTime zonedDateTime = time.atZone(zoneId);
         try {

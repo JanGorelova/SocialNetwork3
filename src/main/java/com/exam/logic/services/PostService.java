@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 import java.util.List;
+import java.util.Optional;
 
 @Log4j
 @AllArgsConstructor
@@ -23,5 +24,13 @@ public class PostService {
 
     public void createPost(Post post) {
         postDAO.create(post);
+    }
+
+    public Optional<Post> getById(Long postId) {
+        return postDAO.read(postId);
+    }
+
+    public void deletePost(Long id) {
+        postDAO.delete(id);
     }
 }
