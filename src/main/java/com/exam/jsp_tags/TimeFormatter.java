@@ -21,7 +21,7 @@ import static com.exam.logic.Constants.USER_ZONE_ID;
 public class TimeFormatter extends TagSupport {
     private static final long serialVersionUID = 3081514849669679223L;
     private Instant time;
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm dd-MM-yyyy");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
 
     @Override
     public int doStartTag() throws JspException {

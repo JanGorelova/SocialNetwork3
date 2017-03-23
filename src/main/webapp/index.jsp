@@ -1,5 +1,6 @@
 <%--suppress JspAbsolutePathInspection --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="text"/>
@@ -25,7 +26,7 @@
         <jsp:include page="${contextPath}/WEB-INF/jsp/common/navigation.jsp"/>
 
         <div class="col-xs-10 col-md-10 col-lg-10">
-                    <h1>Отрядники!</h1><br>
+                    <h1><fmt:message key="index.welcome"/></h1><br>
         </div>
     </div>
 </div>

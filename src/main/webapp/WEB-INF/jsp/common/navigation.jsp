@@ -14,7 +14,7 @@
             <li><a href="${pageContext.request.contextPath}/profile">${my_page}</a></li>
             <li><a href="${pageContext.request.contextPath}/chat">${messages}</a></li>
             <li><a href="${pageContext.request.contextPath}/friends">${friends}</a></li>
-            <li><a href="/url"><strike>Отряды</strike></a></li>
+            <%--<li><a href="/url"><strike>Отряды</strike></a></li>--%>
         </ul>
     </c:if>
 </div>
