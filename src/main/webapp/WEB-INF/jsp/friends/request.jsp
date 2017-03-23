@@ -35,8 +35,10 @@
                             <div class="col-xs-3">
                                 <a href="${contextPath}/profile?id=${user.id}">
                                     <c:set var="avaLink" value="${requestScope.minAvatars.get[user.id]}"/>
-                                    <c:if test="${not empty avaLink}"><img src="${contextPath}/files/${avaLink}"/></c:if>
-                                    <c:if test="${empty avaLink}"><img width="100" height="100" src="${contextPath}/static/img/default_ava_min.png"/></c:if>
+                                    <c:if test="${not empty avaLink}"><img
+                                            src="${contextPath}/files/${avaLink}"/></c:if>
+                                    <c:if test="${empty avaLink}"><img width="100" height="100"
+                                                                       src="${contextPath}/static/img/default_ava_min.png"/></c:if>
                                 </a>
                             </div>
                             <div class="col-xs-6">
@@ -47,16 +49,9 @@
                             <div class="col-xs-3">
                                 <a href="${contextPath}/chat/private?recipient_id=${user.id}"
                                    class="btn btn-success btn-block"><fmt:message key="friends.writeMessage"/></a><br>
-                                <a href="/id${user.id}" class="btn btn-info btn-block"><fmt:message
+                                <a href="${contextPath}/profile?id=${user.id}"
+                                   class="btn btn-info btn-block"><fmt:message
                                         key="friends.goToPage"/></a><br>
-                                <form action="${contextPath}/friends/incoming/accept" method="POST" role="form">
-                                    <div class="btn-group">
-                                        <input type="hidden" name="user_id" value="${user.id}">
-                                        <button type="submit" class="btn btn-default">
-                                            <fmt:message key="friends.acceptIncoming"/>
-                                        </button>
-                                    </div>
-                                </form>
                                 <form action="${contextPath}/friends/cancel" method="POST" role="form">
                                     <div class="btn-group">
                                         <input type="hidden" name="user_id" value="${user.id}">

@@ -26,20 +26,22 @@
         <jsp:include page="${contextPath}/WEB-INF/jsp/common/navigation.jsp"/>
         <div class="col-xs-10 col-md-10 col-lg-10">
             <div class="row">
-                <h2><a href="${contextPath}/friends/search">Поиск людей</a></h2><br>
-                <h2><a href="${contextPath}/friends/incoming">Входящие заявки</a></h2><br>
-                <h2><a href="${contextPath}/friends/request">Исходящие заявки</a></h2><br>
+                <h2><a href="${contextPath}/friends/search"><fmt:message key="friends.search"/></a></h2><br>
+                <h2><a href="${contextPath}/friends/incoming"><fmt:message key="friends.toIncoming"/></a></h2><br>
+                <h2><a href="${contextPath}/friends/request"><fmt:message key="friends.request_page"/></a></h2><br>
             </div>
             <div class="row">
                 <div class="col-xs-12" id="friends">
                     <c:forEach var="user" items="${requestScope.friendsList}">
                         <div class="row">
                             <div class="col-xs-3">
-                                <%--Аватарка--%>
+                                    <%--Аватарка--%>
                                 <a href="${contextPath}/profile?id=${user.id}">
                                     <c:set var="avaLink" value="${requestScope.minAvatars.get[user.id]}"/>
-                                    <c:if test="${not empty avaLink}"><img src="${contextPath}/files/${avaLink}"/></c:if>
-                                    <c:if test="${empty avaLink}"><img width="100" height="100" src="${contextPath}/static/img/default_ava_min.png"/></c:if>
+                                    <c:if test="${not empty avaLink}"><img
+                                            src="${contextPath}/files/${avaLink}"/></c:if>
+                                    <c:if test="${empty avaLink}"><img width="100" height="100"
+                                                                       src="${contextPath}/static/img/default_ava_min.png"/></c:if>
                                 </a>
                             </div>
                             <div class="col-xs-6">
@@ -50,7 +52,8 @@
                             <div class="col-xs-3">
                                 <a href="${contextPath}/chat/private?recipient_id=${user.id}"
                                    class="btn btn-success btn-block"><fmt:message key="friends.writeMessage"/></a><br>
-                                <a href="${contextPath}/profile?id=${user.id}" class="btn btn-info btn-block"><fmt:message
+                                <a href="${contextPath}/profile?id=${user.id}"
+                                   class="btn btn-info btn-block"><fmt:message
                                         key="friends.goToPage"/></a><br>
                                 <form action="${contextPath}/friends/cancel" method="POST" role="form">
                                     <div class="btn-group">
@@ -59,7 +62,8 @@
                                             <fmt:message key="friends.delete"/>
                                         </button>
                                     </div>
-                                </form><br>
+                                </form>
+                                <br>
                             </div>
                         </div>
                     </c:forEach>

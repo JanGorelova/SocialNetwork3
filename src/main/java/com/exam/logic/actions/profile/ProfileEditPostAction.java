@@ -2,22 +2,21 @@ package com.exam.logic.actions.profile;
 
 import com.exam.logic.Action;
 import com.exam.logic.services.ProfileService;
+import com.exam.logic.services.TeamService;
 import com.exam.logic.services.Validator;
 import com.exam.models.Profile;
+import com.exam.models.Team;
 import com.exam.models.User;
 import com.exam.util.NameNormalizer;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.time.LocalDate;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import static com.exam.logic.Constants.*;
 
@@ -36,6 +35,8 @@ public class ProfileEditPostAction implements Action {
         String university = request.getParameter("university");
         String position = request.getParameter("position");
         String about = request.getParameter("about");
+        String team = request.getParameter("team");
+
         Validator.ValidCode validCode = Validator.validateProfile(telephone, birthday, country, city, university, about);
         if (validCode != Validator.ValidCode.SUCCESS) {
             //сообщаем пользователю об ошибке валидации
@@ -45,6 +46,7 @@ public class ProfileEditPostAction implements Action {
                     .country(country)
                     .city(city)
                     .position(position)
+                    .team(team)
                     .telephone(telephone)
                     .about(about);
             try {
@@ -62,13 +64,20 @@ public class ProfileEditPostAction implements Action {
                     .city(city.isEmpty() ? null : NameNormalizer.multiNormalize(city))
                     .university(university.isEmpty() ? null : university)
                     .position(position.isEmpty() ? null : position)
+                    .team(team)
                     .about(about.isEmpty() ? null : about)
                     .build();
             ProfileService profileService = (ProfileService) request.getServletContext().getAttribute(PROFILE_SERVICE);
             profileService.update(profile);
+            profile = profileService.getById(profile.getId());
             request.setAttribute(PROFILE, profile);
             request.setAttribute(SUCCESS_MSG, validCode.getPropertyName());
         }
+        //получаем названия всех отрядов
+        TeamService teamService = (TeamService) request.getServletContext().getAttribute(TEAM_SERVICE);
+        List<Team> teamList = teamService.getAllTeams();
+        request.setAttribute(TEAM_LIST, teamList);
+
         return "/WEB-INF/jsp/profile/edit.jsp";
     }
 

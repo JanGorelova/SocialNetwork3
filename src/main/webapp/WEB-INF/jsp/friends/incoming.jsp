@@ -47,7 +47,7 @@
                             <div class="col-xs-3">
                                 <a href="${contextPath}/chat/private?recipient_id=${user.id}"
                                    class="btn btn-success btn-block"><fmt:message key="friends.writeMessage"/></a><br>
-                                <a href="/id${user.id}" class="btn btn-info btn-block"><fmt:message
+                                <a href="${contextPath}/profile?id=${user.id}" class="btn btn-info btn-block"><fmt:message
                                         key="friends.goToPage"/></a><br>
                                 <form action="${contextPath}/friends/incoming/accept" method="POST" role="form">
                                     <div class="btn-group">

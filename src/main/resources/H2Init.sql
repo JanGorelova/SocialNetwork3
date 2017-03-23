@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS Profiles (
   country    VARCHAR(25),
   city       VARCHAR(25),
   university VARCHAR(50),
-  team       INT REFERENCES Teams (id),
+  team       VARCHAR(30),
   position   VARCHAR(25),
   about      VARCHAR(255),
   FOREIGN KEY (id) REFERENCES Users (id),

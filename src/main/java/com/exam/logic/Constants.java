@@ -9,6 +9,9 @@ public final class Constants {
     public static final String RELATION_DAO = "relationDao";
     public static final String USER_SERVICE = "userService";
     public static final String PROFILE_SERVICE = "profileService";
+    public static final String TEAM_DAO = "team_dao";
+    public static final String TEAM_SERVICE = "team_service";
+    public static final String TEAM_LIST = "team_list";
     public static final String PROFILE = "profile";
     public static final int NEUTRAL = 0;
     public static final int REQUEST = 1;

@@ -7,11 +7,11 @@ import com.exam.util.Security;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
-import static com.exam.logic.Constants.CURRENT_USER;
-import static com.exam.logic.Constants.ERROR_MSG;
-import static com.exam.logic.Constants.USER_SERVICE;
+import static com.exam.logic.Constants.*;
 import static com.exam.servlets.ErrorHandler.ErrorCode.LOGIN_FAIL;
 
 public class LoginAction implements Action {
@@ -22,6 +22,10 @@ public class LoginAction implements Action {
         String view;
         String login = request.getParameter("j_username");
         String password = Security.md5Hex(request.getParameter("j_password"));
+        //устанавливаем тайм зону
+        String offset = request.getParameter("time_zone");
+        ZoneOffset zoneOffset = ZoneOffset.ofHours(-Integer.parseInt(offset) / 60);
+        request.getSession().setAttribute(USER_ZONE_ID, ZoneId.ofOffset("UTC", zoneOffset));
 
         Optional<User> userOptional = userService.authorize(login, password);
         if (userOptional.isPresent()) {

@@ -6,7 +6,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <fmt:message key="error.danger" var="danger"/>
-<fmt:message key="${errorMsg}" var="errorMsg"/>
+<c:if test="${not empty requestScope.errorMsg}"><fmt:message key="${errorMsg}" var="errorMsg"/></c:if>
 <fmt:message key="title.registration" var="legend"/>
 <fmt:message key="regform.fname" var="firstNameLabel"/>
 <fmt:message key="regform.fname.hint" var="firstNameHint"/>
@@ -88,13 +88,11 @@
                                 <label class="control-label" for="gender">${genderLabel}</label>
                                 <select id="gender" name="gender" class="form-control input-xlarge">
                                     <option
-                                            <c:if test="${param.gender=='male'}">selected</c:if> value="male">
-                                        ${maleOption}
-                                    </option>
+                                            <c:if test="${param.gender=='male'}">selected</c:if> value="male"
+                                    ><c:out value="${maleOption}"/></option>
                                     <option
-                                            <c:if test="${param.gender=='female'}">selected</c:if> value="female">
-                                        ${femaleOption}
-                                    </option>
+                                            <c:if test="${param.gender=='female'}">selected</c:if> value="female"
+                                    ><c:out value="${femaleOption}"/></option>
                                 </select>
                             </div>
 

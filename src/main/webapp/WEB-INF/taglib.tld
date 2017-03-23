@@ -17,4 +17,14 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <name>zoned_time</name>
+        <tag-class>com.exam.jsp_tags.ZonedTimeFormatter</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>time</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

@@ -49,6 +49,7 @@
                                    value="${param.j_username}" required autofocus>
                             <input type="password" class="form-control " placeholder="${passwordLabel}"
                                    name="j_password" required>
+                            <input type="hidden" name="time_zone" id="time_zone" value="0">
                             <button class="btn btn-lg btn-primary btn-block" type="submit">${signinBtn}</button>
                         </form>
 
@@ -63,4 +64,9 @@
 </div>
 <jsp:include page="${contextPath}/WEB-INF/jsp/common/scripts.jsp"/>
 </body>
+<script>
+    var offset = new Date().getTimezoneOffset();
+    console.log(offset);
+    document.getElementById("time_zone").value = offset;
+</script>
 </html>

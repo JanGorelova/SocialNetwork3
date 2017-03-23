@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Solar BIM</title>
+    <title><fmt:message key="profile"/></title>
 
     <jsp:include page="${contextPath}/WEB-INF/jsp/common/css.jsp"/>
 
@@ -121,10 +121,10 @@
                         <div class="row">
                             <div class="col-xs-6"><fmt:message key="profile.gender"/>:</div>
                             <div class="col-xs-6">
-                                <c:if test="${user.gender==0}">
+                                <c:if test="${user.gender==1}">
                                     <fmt:message key="profile.gender.male"/>
                                 </c:if>
-                                <c:if test="${user.gender==1}">
+                                <c:if test="${user.gender==0}">
                                     <fmt:message key="profile.gender.female"/>
                                 </c:if>
                             </div>
@@ -190,6 +190,7 @@
             <%--Посты на стене--%>
             <div class="row">
                 <div class="col-xs-12" id="wall">
+                    <h3><fmt:message key="profile.wall"/></h3>
                     <%--Форма для нового поста--%>
                     <div class="row">
                         <div class="col-xs-12">
@@ -227,9 +228,9 @@
                     <table class="table table-condensed">
                         <thead>
                         <tr>
-                            <th>Автор</th>
-                            <th>Текст поста</th>
-                            <th>Создан</th>
+                            <th><fmt:message key="post.author"/></th>
+                            <th><fmt:message key="post.text"/></th>
+                            <th><fmt:message key="post.time"/></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -252,7 +253,7 @@
                                     <c:if test="${currentUser.id==post.sender||currentUser.id==post.recipient}">
                                         <form action="${contextPath}/post/delete" method="post">
                                             <input type="hidden" name="post_id" value="${post.id}">
-                                            <input type="submit" value="удалить пост">
+                                            <input type="submit" value="<fmt:message key="post.delete"/>">
                                         </form>
                                     </c:if>
                                 </td>

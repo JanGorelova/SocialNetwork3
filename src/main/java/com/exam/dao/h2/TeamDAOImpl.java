@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -58,14 +59,23 @@ public class TeamDAOImpl implements TeamDAO {
     @Override
     public void delete(Long id) {
         try (Connection connection = connectionPool.takeConnection()) {
-            connection.setAutoCommit(false);
-            executeUpdate(connection,
-                    "UPDATE Profiles SET team=NULL WHERE team=?;",
-                    id);
-            executeUpdate(connection,
-                    "DELETE FROM Teams WHERE id=?;",
-                    id);
-            connection.commit();
+            try {
+                connection.setAutoCommit(false);
+                executeUpdate(connection,
+                        "UPDATE Profiles SET team=NULL WHERE team=(SELECT name FROM Teams WHERE id=?);",
+                        id);
+                executeUpdate(connection,
+                        "DELETE FROM Teams WHERE id=?;",
+                        id);
+                connection.commit();
+            } catch (SQLException e){
+                connection.rollback();
+                throw e;
+            }
+            finally {
+                connection.setAutoCommit(true);
+            }
+
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -88,5 +98,21 @@ public class TeamDAOImpl implements TeamDAO {
             throw new DaoException(e);
         }
         return teamOptional;
+    }
+
+    @Override
+    public List<Team> getAllTeams() {
+        List<Team> list;
+        try (Connection connection = connectionPool.takeConnection()) {
+            list = executeQuery(connection,
+                    "SELECT * FROM Teams",
+                    rs -> Team.builder()
+                            .id(rs.getLong("id"))
+                            .name(rs.getString("name"))
+                            .build());
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return list;
     }
 }

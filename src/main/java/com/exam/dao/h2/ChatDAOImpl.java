@@ -125,8 +125,8 @@ public class ChatDAOImpl implements ChatDAO {
                             .chatID(rs.getLong("chat_id"))
                             .senderID(rs.getLong("sender_id"))
                             .senderName(rs.getString("first_name"))
-                            .sendingTime(ZonedDateTime.of(
-                                    rs.getTimestamp("sending_time").toLocalDateTime(),
+                            .sendingTime(ZonedDateTime.ofInstant(
+                                    rs.getTimestamp("sending_time").toInstant(),
                                     userZoneId))
                             .text(rs.getString("text")).build(),
                     chatID, limit, offset);
@@ -221,10 +221,10 @@ public class ChatDAOImpl implements ChatDAO {
                         message.getSenderID(),
                         message.getChatID(),
                         message.getText(),
-                        Timestamp.valueOf(message.getSendingTime().toLocalDateTime()));
+                        Timestamp.from(message.getSendingTime().toInstant()));
                 executeUpdate(connection,
                         "UPDATE Chats SET last_update=? WHERE id=?",
-                        Timestamp.valueOf(message.getSendingTime().toLocalDateTime()),
+                        Timestamp.from(message.getSendingTime().toInstant()),
                         message.getChatID());
                 connection.commit();
             } catch (RuntimeException e) {

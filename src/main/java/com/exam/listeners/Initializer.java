@@ -57,5 +57,9 @@ public class Initializer implements ServletContextListener {
         PostDAO postDAO = new PostDAOImpl(connectionPool);
         context.setAttribute(POST_DAO, postDAO);
         context.setAttribute(POST_SERVICE, new PostService(postDAO));
+
+        TeamDAO teamDAO = new TeamDAOImpl(connectionPool);
+        context.setAttribute(TEAM_DAO, teamDAO);
+        context.setAttribute(TEAM_SERVICE, new TeamService(teamDAO));
     }
 }

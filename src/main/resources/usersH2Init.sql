@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS Profiles (
   country    VARCHAR(25),
   city       VARCHAR(25),
   university VARCHAR(50),
-  team       INT REFERENCES Teams (id),
+  team       VARCHAR(30),
   position   VARCHAR(25),
   about      VARCHAR(255),
   FOREIGN KEY (id) REFERENCES Users (id),
@@ -87,38 +87,44 @@ CREATE TABLE IF NOT EXISTS Chat_Participants (
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
 VALUES ('admin@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Василий', 'Бобков', 0, 2);
 
+INSERT INTO Teams (name) VALUES ('Кандидатский');
 INSERT INTO Teams (name) VALUES ('Вихрь');
+INSERT INTO Teams (name) VALUES ('Искра');
+INSERT INTO Teams (name) VALUES ('Алые паруса');
+INSERT INTO Teams (name) VALUES ('ГОСТ');
+INSERT INTO Teams (name) VALUES ('Орион');
+
 INSERT INTO Profiles (id, telephone, birthday, country, city, university, team, position, about)
-VALUES (1, '+79315555555', '1993-12-01', 'Россия', 'Санкт - Петербург', 'Политех', 1, 1, 'Застенчивый');
+VALUES (1, '+79315555555', '1993-12-01', 'Россия', 'Санкт-Петербург', 'Политех', NULL , 1, 'Увлечённый');
 
 INSERT INTO Users (email, PASSWORD, first_name, last_name, gender, ROLE)
-VALUES ('user2@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Петя', 'Петров', 0, 0);
+VALUES ('user2@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Петя', 'Петров', 1, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user3@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Антон', 'Чехов', 0, 0);
+VALUES ('user3@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Антон', 'Чехов', 1, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user4@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Александр', 'Пушкин', 0, 1);
+VALUES ('user4@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Александр', 'Пушкин', 1, 1);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user5@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Филипп', 'Преображенский', 0, 0);
+VALUES ('user5@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Филипп', 'Преображенский', 1, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user6@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Александр', 'Македонский', 0, 0);
+VALUES ('user6@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Александр', 'Македонский', 1, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user7@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Елена', 'Троянская', 1, 0);
+VALUES ('user7@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Елена', 'Троянская', 0, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user8@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Елена', 'Пушкова', 1, 0);
+VALUES ('user8@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Елена', 'Пушкова', 0, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user9@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Степан', 'Калашников', 0, 0);
+VALUES ('user9@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Степан', 'Калашников', 1, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user10@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Евгений', 'Скребцов', 0, 0);
+VALUES ('user10@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Евгений', 'Скребцов', 1, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user11@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Николай', 'Снегирёв', 0, 0);
+VALUES ('user11@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Николай', 'Снегирёв', 1, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user12@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Алёна', 'Саксонова', 1, 0);
+VALUES ('user12@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Алёна', 'Саксонова', 0, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user13@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Анастасия', 'Полецкая', 1, 0);
+VALUES ('user13@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Анастасия', 'Полецкая', 0, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user14@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Евгений', 'Юруть', 0, 0);
+VALUES ('user14@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Евгений', 'Юруть', 1, 0);
 INSERT INTO Users (email, password, first_name, last_name, gender, role)
-VALUES ('user15@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Леонид', 'Терлецкий', 0, 0);
+VALUES ('user15@exam.com', 'e10adc3949ba59abbe56e057f20f883e', 'Леонид', 'Терлецкий', 1, 0);
 
 INSERT INTO Relations (sender, recipient, type) VALUES (1, 2, 3);
 INSERT INTO Relations (sender, recipient, type) VALUES (1, 6, 3);

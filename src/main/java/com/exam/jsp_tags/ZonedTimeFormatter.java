@@ -8,7 +8,6 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
-import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,9 +17,9 @@ import static com.exam.logic.Constants.USER_ZONE_ID;
 @Log4j
 @Setter
 @Getter
-public class TimeFormatter extends TagSupport {
+public class ZonedTimeFormatter extends TagSupport {
     private static final long serialVersionUID = 3081514849669679223L;
-    private Instant time;
+    private ZonedDateTime time;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm dd-MM-yyyy");
 
     @Override
@@ -28,7 +27,7 @@ public class TimeFormatter extends TagSupport {
         JspWriter out = pageContext.getOut();
         ZoneId zoneId = (ZoneId) pageContext.getSession().getAttribute(USER_ZONE_ID);
         if (zoneId == null) zoneId = ZoneId.of("UTC");
-        ZonedDateTime zonedDateTime = time.atZone(zoneId);
+        ZonedDateTime zonedDateTime = time.toInstant().atZone(zoneId);
         try {
             out.write(formatter.format(zonedDateTime));
         } catch (IOException e) {

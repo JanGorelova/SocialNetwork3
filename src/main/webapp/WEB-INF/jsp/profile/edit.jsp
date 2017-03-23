@@ -104,6 +104,19 @@
                                 </div>
                                 <div class="row">
                                     <div class="control-group col-xs-12">
+                                        <label class="control-label" for="team"><fmt:message
+                                                key="profile.team"/></label>
+                                        <select id="team" name="team">
+                                            <c:set var="userTeam" value="${profile.team}"/>
+                                            <c:forEach items="${requestScope.team_list}" var="item">
+                                                <option value="${item.name}" <c:if test="${userTeam==item.name}">selected</c:if>
+                                                ><c:out value="${item.name}"/></option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="control-group col-xs-12">
                                         <label class="control-label" for="position"><fmt:message
                                                 key="profile.position"/></label>
                                         <input type="text" id="position" name="position" placeholder=""

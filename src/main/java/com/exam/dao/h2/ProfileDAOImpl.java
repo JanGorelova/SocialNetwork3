@@ -5,12 +5,14 @@ import com.exam.dao.DaoException;
 import com.exam.dao.ProfileDAO;
 import com.exam.models.Profile;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Optional;
 
+@Log4j
 @RequiredArgsConstructor
 public class ProfileDAOImpl implements ProfileDAO {
     private final ConnectionPool connectionPool;
@@ -20,7 +22,7 @@ public class ProfileDAOImpl implements ProfileDAO {
         try (Connection connection = connectionPool.takeConnection()) {
             executeUpdate(connection,
                     "INSERT INTO Profiles (id, telephone, birthday, country, city, university, team, " +
-                            "position, about) VALUES(?,?,?,?,?,?, (SELECT t.id FROM Teams t WHERE t.name=?),?,?)",
+                            "position, about) VALUES(?,?,?,?,?,?,?,?,?)",
                     profile.getId(),
                     profile.getTelephone(),
                     Optional.ofNullable(profile.getBirthday())
@@ -42,8 +44,9 @@ public class ProfileDAOImpl implements ProfileDAO {
         Optional<Profile> profileOptional;
         try (Connection connection = connectionPool.takeConnection()) {
             profileOptional = executeQuery(connection,
-                    "SELECT p.*, t.name team FROM (SELECT * FROM Profiles WHERE id=?) AS p " +
-                            "JOIN Teams AS t ON t.id = p.id;",
+//                    "SELECT p.*, t.name team FROM (SELECT * FROM Profiles WHERE id=?) AS p " +
+//                            "RIGHT JOIN Teams AS t ON t.id = p.team;",
+                    "SELECT * FROM Profiles WHERE id=?",
                     (rs) -> Profile.builder()
                             .id(rs.getLong("id"))
                             .telephone(rs.getString("telephone"))
@@ -53,7 +56,7 @@ public class ProfileDAOImpl implements ProfileDAO {
                             .country(rs.getString("country"))
                             .city(rs.getString("city"))
                             .university(rs.getString("university"))
-                            .team(rs.getString("name"))
+                            .team(rs.getString("team"))
                             .position(rs.getString("position"))
                             .about(rs.getString("about"))
                             .build(),
@@ -68,10 +71,13 @@ public class ProfileDAOImpl implements ProfileDAO {
 
     @Override
     public void update(Profile profile) {
+        log.debug(profile);
         try (Connection connection = connectionPool.takeConnection()) {
             executeUpdate(connection,
+//                    "UPDATE Profiles SET telephone=?, birthday=?, country=?, city=?, university=?, " +
+//                            "team=(SELECT t.id FROM Teams t WHERE t.name=?), position=?, about=? WHERE id=?",
                     "UPDATE Profiles SET telephone=?, birthday=?, country=?, city=?, university=?, " +
-                            "team=(SELECT t.id FROM Teams t WHERE t.name=?), position=?, about=? WHERE id=?",
+                            "team=?, position=?, about=? WHERE id=?",
                     profile.getTelephone(),
                     Optional.ofNullable(profile.getBirthday())
                             .map(Date::valueOf)

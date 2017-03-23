@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class SendMessageAction implements Action {
                 .senderID(currentUser.getId())
                 .chatID(chatID)
                 .text(text)
-                .sendingTime(ZonedDateTime.now(ZoneId.of("UTC")))
+                .sendingTime(ZonedDateTime.ofInstant(Instant.now(),ZoneId.of("UTC")))
                 .build();
         chatService.sendMessage(message);
         String referer = request.getHeader("referer");
