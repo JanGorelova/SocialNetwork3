@@ -36,29 +36,31 @@ public class Initializer implements ServletContextListener {
         connectionPool.executeScript(pathToDbConfig + "usersH2Init.sql");
         log.info("SQL initialization has done successfully");
 
-        UserDAO userDAO = new UserDAOImpl(connectionPool);
+        AbstractDaoFactory daoFactory = new H2DaoFactory();
+
+        UserDAO userDAO = daoFactory.createUserDAO(connectionPool);
         RelationDAO relationDAO = new RelationDAOImpl(connectionPool);
         context.setAttribute(USER_DAO, userDAO);
         context.setAttribute(RELATION_DAO, relationDAO);
         context.setAttribute(USER_SERVICE, new UserService(userDAO, relationDAO));
 
-        ProfileDAO profileDAO = new ProfileDAOImpl(connectionPool);
+        ProfileDAO profileDAO = daoFactory.createProfileDAO(connectionPool);
         context.setAttribute(PROFILE_DAO, profileDAO);
         context.setAttribute(PROFILE_SERVICE, new ProfileService(profileDAO));
 
-        ChatDAO chatDAO = new ChatDAOImpl(connectionPool);
+        ChatDAO chatDAO = daoFactory.createChatDAO(connectionPool);
         context.setAttribute(CHAT_DAO, profileDAO);
         context.setAttribute(CHAT_SERVICE, new ChatService(chatDAO));
 
-        PhotoDAO photoDAO = new PhotoDAOImpl(connectionPool);
+        PhotoDAO photoDAO = daoFactory.createPhotoDAO(connectionPool);
         context.setAttribute(PHOTO_DAO, photoDAO);
         context.setAttribute(PHOTO_SERVICE, new PhotoService(photoDAO));
 
-        PostDAO postDAO = new PostDAOImpl(connectionPool);
+        PostDAO postDAO = daoFactory.createPostDAO(connectionPool);
         context.setAttribute(POST_DAO, postDAO);
         context.setAttribute(POST_SERVICE, new PostService(postDAO));
 
-        TeamDAO teamDAO = new TeamDAOImpl(connectionPool);
+        TeamDAO teamDAO = daoFactory.createTeamDAO(connectionPool);
         context.setAttribute(TEAM_DAO, teamDAO);
         context.setAttribute(TEAM_SERVICE, new TeamService(teamDAO));
     }
